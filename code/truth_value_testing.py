@@ -1,5 +1,4 @@
 def truth_value_testing():
-
     if None  or \
        False or \
        0     or \
