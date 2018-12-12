@@ -5,7 +5,7 @@ Python provides various `built-in types <https://docs.python.org/2/library/stdty
 such as numerics, sequences, mappings, files, classes, instance and exceptions.
 Let's see how do these types behave in RPython. Note that, in this document, we
 only focus on Python 2.7. The built-in types in Python 3 may be a little
-different, but most of types are same.
+different, but most of the types are same.
 
 Truth Value Testing
 -------------------
@@ -33,16 +33,17 @@ operands.)
 .. literalinclude:: code/truth_value_testing.py
 
 However, there is one inconsistency. In Python, the following values are
-considered false:
+considered *false*:
 
 * instances of user-defined classes, if the class defines a ``__nonzero__()`` or
   ``__len__()`` method, when that method returns the integer zero or ``bool`` value
   ``False``.
 
-In RPython, the above values are considered true.
+In RPython, the above values are considered *true*.
 
 For example, we have two classes: ``ZeroLen`` and ``NonZero``. They define
-``__len__()`` and ``__nonzero__()`` methods respectively.
+``__len__()`` and ``__nonzero__()`` methods respectively. Truth value testing of
+instances of ``ZeroLen`` and ``NonZero`` are *different* in RPython and Python.
 
 .. literalinclude:: code/truth_value_testing_inconsistency.py
 
