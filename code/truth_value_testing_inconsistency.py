@@ -20,7 +20,6 @@ def truth_value_testing_inconsistency():
     else:
         print("non_zero is False in Python.")     # Python
 
-
 def entry_point(argv):
     truth_value_testing_inconsistency()
     return 0
