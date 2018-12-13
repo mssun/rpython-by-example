@@ -25,4 +25,8 @@ launching the executable, a "Hello, World!" message will be printed out.
    $ ./hello_world-c
    Hello, World!
 
+Since RPython syntax is a restricted version of Python, therefore you can
+use any Python interpreter to run the hello world example just like before.
+In this example, we should add an entry point in the script.
 
+.. literalinclude:: code/hello_world_python.py
