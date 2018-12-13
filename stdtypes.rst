@@ -32,14 +32,15 @@ operands.)
 
 .. literalinclude:: code/truth_value_testing.py
 
-However, there is one inconsistency. In Python, the following values are
-considered *false*:
+.. warning::
+  However, there is one inconsistency. In Python, the following values are
+  considered *false*:
 
-* instances of user-defined classes, if the class defines a ``__nonzero__()`` or
-  ``__len__()`` method, when that method returns the integer zero or ``bool`` value
-  ``False``.
+  * instances of user-defined classes, if the class defines a ``__nonzero__()`` or
+    ``__len__()`` method, when that method returns the integer zero or ``bool`` value
+    ``False``.
 
-In RPython, the above values are considered *true*.
+  In RPython, the above values are considered *true*.
 
 For example, we have two classes: ``ZeroLen`` and ``NonZero``. They define
 ``__len__()`` and ``__nonzero__()`` methods respectively. Truth value testing of
@@ -63,8 +64,29 @@ However, the execution results are inconsistent using RPython and Python
 Boolean Operations
 ------------------
 
+The boolean operations in RPython are exactly *same* as Python. You can use ``and``,
+``or``, and ``not`` to operate on two truth values (e.g., ``True``, ``False``, ``''``, ``{}``).
+
+.. literalinclude:: code/boolean_operations.py
+
 Comparisons
 -----------
+
+Comparison operations in RPython are similar with Python, which contain:
+``<``, ``<=``, ``>``, ``>=``, ``==``, ``!=``, ``is``, ``is not``. Note that
+``is`` and ``is not`` are operations to compare object identity.
+
+Non-identical instances of a class normally compare as non-equal unless the
+class defines the ``__eq__()`` method.
+
+.. warning::
+    One exception should be noted is that the comparisons of instances of same class
+    or other types of object by defining ``__lt__()``, ``__le__()``, ``__gt__()``,
+    ``__ge__()``, and ``__cmp__()`` method was not supported in RPython.
+
+The following example shows the comparisons between integers and instances.
+
+.. literalinclude:: code/comparisons.py
 
 Numeric Types
 -------------
