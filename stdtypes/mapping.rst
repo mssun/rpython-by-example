@@ -1,0 +1,4 @@
+Mapping Types
+=============
+
+* dict

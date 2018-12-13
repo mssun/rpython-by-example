@@ -1,0 +1,5 @@
+Set Types
+=========
+
+* set
+* frozenset

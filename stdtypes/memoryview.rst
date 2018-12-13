@@ -1,0 +1,4 @@
+memoryview type
+===============
+
+* memoryview

@@ -10,13 +10,11 @@ RPython by Example (RPyBE) is a collection of runnable examples that illustrate
 various RPython concepts and libraries.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Contents:
 
    hello-world
-   stdtypes
-
-
+   stdtypes/index
 
 Indices and tables
 ==================
