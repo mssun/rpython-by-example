@@ -1,13 +1,10 @@
-.. RPython by Example documentation master file, created by
-   sphinx-quickstart on Wed Nov 28 15:57:49 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 RPython by Example
 ==============================================
 
 RPython by Example (RPyBE) is a collection of runnable examples that illustrate
-various RPython concepts and libraries.
+various RPython concepts and libraries. RPyBE starts with a hello world example
+and built-in types in RPython, then dives into RPython libraries, and build a
+simple application at last.
 
 .. toctree::
    :maxdepth: 2
