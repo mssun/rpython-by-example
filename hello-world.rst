@@ -30,3 +30,10 @@ use any Python interpreter to run the hello world example just like before.
 In this example, we should add an entry point in the script.
 
 .. literalinclude:: code/hello_world_python.py
+
+Then, you can run the script as normal with Python.
+
+.. code-block:: shell
+
+   $ python hello_world_python.py
+   Hello, World!
