@@ -16,7 +16,10 @@ suggestions in warning boxes within the paragraphs.
    :caption: Contents:
 
    hello-world
-   stdtypes/index
+   builtin-types/index
+   modules/index
+   ffi/index
+   toy-language/index
 
 Indices and tables
 ==================
