@@ -24,3 +24,6 @@ The following code illustrated some unsupported operations in RPython.
 Bitwise Operations on Integer Types
 -----------------------------------
 
+Bitwise operations in RPython are same as Python.
+
+.. literalinclude:: ../code/numeric_bitwise.py
