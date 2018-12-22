@@ -8,18 +8,19 @@ only focus on Python 2.7. The built-in types in Python 3 may be a little
 different, but most of the types are same.
 
 .. toctree::
-  :maxdepth: 2
+   :hidden:
+   :maxdepth: 2
 
-  truth-value-testing
-  boolean-operations
-  comparisons
-  numeric
-  iterator
-  sequence
-  set
-  mapping
-  file
-  memoryview
-  context-manager
-  others
-  special-attributes
+   truth-value-testing
+   boolean-operations
+   comparisons
+   numeric
+   iterator
+   sequence
+   set
+   mapping
+   file
+   memoryview
+   context-manager
+   others
+   special-attributes

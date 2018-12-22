@@ -1,5 +1,5 @@
 RPython By Example
-==============================================
+==================
 
 RPython by Example (RPyBE) is a collection of runnable examples that illustrate
 various RPython concepts and libraries. RPyBE starts with a hello world example
@@ -12,18 +12,13 @@ built-in types. We will highlight their differences, inconsistencies, and usage
 suggestions in admonition boxes within the paragraphs.
 
 .. toctree::
+   :hidden:
    :maxdepth: 2
    :caption: Contents:
 
+   Introduction <self>
    hello-world
    builtin-types/index
    modules/index
    ffi/index
    toy-language/index
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
