@@ -8,7 +8,7 @@ class Box():
         for i in self.content:
             yield i
 
-def iterator():
+def iterator_generator():
     b = Box()
     b.add("Tiger")
     b.add("Kitty")
@@ -20,7 +20,7 @@ def iterator():
         print i
 
 def entry_point(argv):
-    iterator()
+    iterator_generator()
     return 0
 
 def target(*args): return entry_point
