@@ -157,7 +157,7 @@ texinfo_documents = [
      author, 'RPythonByExample', 'RPython By Example (RPyBE) is a collection of \
      runnable examples that illustrate various RPython concepts and RPython \
      libraries.',
-     'Miscellaneous'),
+     'Programming Language'),
 ]
 
 
