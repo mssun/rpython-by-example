@@ -19,7 +19,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = u'RPython by Example'
+project = u'RPython By Example'
 copyright = u'2018, Mingshen Sun'
 author = u'Mingshen Sun'
 
@@ -105,7 +105,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'RPythonbyExampledoc'
+htmlhelp_basename = 'RPythonByExampledoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -132,7 +132,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'RPythonbyExample.tex', u'RPython by Example',
+    (master_doc, 'RPythonByExample.tex', u'RPython By Example',
      u'Mingshen Sun', 'manual'),
 ]
 
@@ -142,7 +142,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'rpythonbyexample', u'RPython by Example',
+    (master_doc, 'rpythonbyexample', u'RPython By Example',
      [author], 1)
 ]
 
@@ -153,8 +153,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'RPythonbyExample', u'RPython by Example',
-     author, 'RPythonbyExample', 'RPython by Example (RPyBE) is a collection of \
+    (master_doc, 'RPythonByExample', u'RPython By Example',
+     author, 'RPythonByExample', 'RPython By Example (RPyBE) is a collection of \
      runnable examples that illustrate various RPython concepts and RPython \
      libraries.',
      'Miscellaneous'),

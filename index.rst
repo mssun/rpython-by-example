@@ -1,4 +1,4 @@
-RPython by Example
+RPython By Example
 ==============================================
 
 RPython by Example (RPyBE) is a collection of runnable examples that illustrate
