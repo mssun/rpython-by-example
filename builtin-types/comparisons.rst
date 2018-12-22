@@ -8,7 +8,7 @@ Comparison operations in RPython are similar with Python, which contain:
 Non-identical instances of a class normally compare as non-equal unless the
 class defines the ``__eq__()`` method.
 
-.. warning::
+.. attention::
     One exception should be noted is that the comparisons of instances of same class
     or other types of object by defining ``__lt__()``, ``__le__()``, ``__gt__()``,
     ``__ge__()``, and ``__cmp__()`` method was not supported in RPython.

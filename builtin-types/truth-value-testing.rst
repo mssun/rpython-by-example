@@ -23,7 +23,7 @@ operands.)
 
 .. literalinclude:: ../code/truth_value_testing.py
 
-.. warning::
+.. attention::
   However, there is one inconsistency. In Python, the following values are
   considered *false*:
 

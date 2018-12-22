@@ -9,7 +9,7 @@ simple application at last.
 Since RPython is based on the Python syntax, most concepts in RPython are
 similar with Python. However, there are still some notable differences in
 built-in types. We will highlight their differences, inconsistencies, and usage
-suggestions in warning boxes within the paragraphs.
+suggestions in admonition boxes within the paragraphs.
 
 .. toctree::
    :maxdepth: 2

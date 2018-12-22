@@ -12,7 +12,7 @@ All built-in numeric types support the following operations.
 
 .. literalinclude:: ../code/numeric.py
 
-.. warning::
+.. attention::
    Some operations or built-in functions can be used in Python but currently not
    supported in RPython such as ``long()``, ``complex()``, ``conjugate()``,
    ``x ** y``, and ``float(nan)``.
