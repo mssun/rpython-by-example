@@ -6,7 +6,7 @@ various RPython concepts and libraries.
 
 Please use following commands to install dependencies and build RPyBE.
 
-```
+```shell
 $ pip install sphinx sphinx_rtd_theme    # install Sphinx
 $ sudo apt-get install texlive-full      # install TeX Live
 $ make html        # generates webpages in _build/html
