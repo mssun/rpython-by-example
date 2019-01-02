@@ -47,34 +47,43 @@ can be used in a normal Python implementation.
 list
 ----
 
-lists are used as an allocated array.  Lists are over-allocated, so list.append()
-is reasonably fast. However, if you use a fixed-size list, the code
-is more efficient. Annotator can figure out most of the time that your
-list is fixed-size, even when you use list comprehension.
-Negative or out-of-bound indexes are only allowed for the
-most common operations, as follows:
+Most list operations and methods are supported in RPython. However, methods
+may have some restrictions. The following examples illustrate usages of the list
+in RPython and some unsupported operations as well.
 
-- *indexing*:
-  positive and negative indexes are allowed. Indexes are checked when requested
-  by an IndexError exception clause.
+.. literalinclude:: ../code/lists.py
 
-- *slicing*:
-  the slice start must be within bounds. The stop doesn't need to, but it must
-  not be smaller than the start.  All negative indexes are disallowed, except for
-  the [:-1] special case.  No step.  Slice deletion follows the same rules.
+.. attention::
+   lists are used as an allocated array.  Lists are over-allocated, so list.append()
+   is reasonably fast. However, if you use a fixed-size list, the code
+   is more efficient. Annotator can figure out most of the time that your
+   list is fixed-size, even when you use list comprehension.
+   Negative or out-of-bound indexes are only allowed for the
+   most common operations, as follows:
 
-- *slice assignment*:
-  only supports ``lst[x:y] = sublist``, if ``len(sublist) == y - x``.
-  In other words, slice assignment cannot change the total length of the list,
-  but just replace items.
+   - *indexing*:
+     positive and negative indexes are allowed. Indexes are checked when requested
+     by an IndexError exception clause.
 
-- *other operators*:
-  ``+``, ``+=``, ``in``, ``*``, ``*=``, ``==``, ``!=`` work as expected.
+   - *slicing*:
+     the slice start must be within bounds. The stop doesn't need to, but it must
+     not be smaller than the start.  All negative indexes are disallowed, except for
+     the [:-1] special case.  No step.  Slice deletion follows the same rules.
 
-- *methods*:
-  append, index, insert, extend, reverse, pop.  The index used in pop() follows
-  the same rules as for *indexing* above.  The index used in insert() must be within
-  bounds and not negative.
+   - *slice assignment*:
+     only supports ``lst[x:y] = sublist``, if ``len(sublist) == y - x``.
+     In other words, slice assignment cannot change the total length of the list,
+     but just replace items.
+
+   - *other operators*:
+     ``+``, ``+=``, ``in``, ``*``, ``*=``, ``==``, ``!=`` work as expected.
+
+   - *methods*:
+     append, index, insert, extend, reverse, pop.  The index used in pop() follows
+     the same rules as for *indexing* above.  The index used in insert() must be within
+     bounds and not negative.
+
+.. literalinclude:: ../code/lists_unsupported.py
 
 tuple
 -----
