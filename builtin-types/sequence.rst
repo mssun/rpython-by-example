@@ -101,3 +101,12 @@ The restrictions can be summarized as follows.
    * There is no general way to convert a list into a tuple, because the length
      of the result would not be known statically. (You can of course do
      ``t = (lst[0], lst[1], lst[2])`` if you know that lst has got 3 items.)
+
+xrange
+------
+
+The following examples illustrate the usage of ``range`` and ``xrange`` in
+RPython. ``range`` and ``xrange`` are identical. ``range`` does not necessarily
+create an array, only if the result is modified.
+
+.. literalinclude:: ../code/xrange.py
