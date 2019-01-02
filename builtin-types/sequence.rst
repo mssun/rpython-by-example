@@ -88,10 +88,16 @@ in RPython and some unsupported operations as well.
 tuple
 -----
 
+Tuples in RPython are very different. There are many restrictions to use tuples.
+
+.. literalinclude:: ../code/lists_unsupported.py
+
+The restrictions can be summarized as follows.
+
 .. attention::
    * no variable-length tuples; use them to store or return pairs or n-tuples of
      values. Each combination of types for elements and length constitute a
      separate and not mixable type.
    * There is no general way to convert a list into a tuple, because the length
-     of the result would not be known statically. (You can of course do t =
-     (lst[0], lst[1], lst[2]) if you know that lst has got 3 items.)
+     of the result would not be known statically. (You can of course do
+     ``t = (lst[0], lst[1], lst[2])`` if you know that lst has got 3 items.)
