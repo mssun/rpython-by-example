@@ -41,4 +41,6 @@ of bits to present an integer. Others like ``float.as_integer_ratio()``,
 not supported.
 
 .. attention::
-   *All* additional methods on numeric types are not supported in RPython
+   *All* additional methods such as ``int.bit_length()`` and
+   ``float.float.as_integer_ratio()`` on numeric types are not supported in
+   RPython.
