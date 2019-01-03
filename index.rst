@@ -29,6 +29,7 @@ to understand RPython's restrictions and quickly get started with it.
    Introduction <self>
    hello-world
    builtin-types/index
+   builtin-functions/index
    modules/index
    ffi/index
    toy-language/index
