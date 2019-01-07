@@ -1,7 +1,8 @@
-Modules
-=======
+Modules (rlib)
+==============
 
-There are many general useful modules in RPython's standard library modules.
+There are many general useful modulesin RPython's standard library (also called
+rlib) .
 
 * buffer
 * cache
