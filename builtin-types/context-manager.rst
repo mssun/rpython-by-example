@@ -1,4 +1,0 @@
-Context Manager Types
-=====================
-
-* contextmanager

@@ -20,7 +20,3 @@ different, but most of the types are same.
    set
    mapping
    file
-   memoryview
-   context-manager
-   others
-   special-attributes
