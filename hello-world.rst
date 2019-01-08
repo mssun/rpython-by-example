@@ -37,3 +37,6 @@ Then, you can run the script as normal with Python.
 
    $ python hello_world_python.py
    Hello, World!
+
+This implies that you can test your RPython code with any Python interpreter and
+then compile to native code.
