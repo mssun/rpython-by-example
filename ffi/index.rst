@@ -1,5 +1,5 @@
-Foreign Function Interface
-==========================
+Foreign Function Interface (rffi)
+=================================
 
 * declaring low-level external function
 * types
