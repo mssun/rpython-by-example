@@ -93,3 +93,5 @@ rlib) .
    rrandom
    rurandom
    rtime
+   rmd5
+   rsha
