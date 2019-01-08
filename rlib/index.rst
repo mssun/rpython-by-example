@@ -84,3 +84,12 @@ rlib) .
 * types
 * unicodedata
 * unroll
+
+.. toctree::
+   :hidden:
+   :maxdepth: 2
+
+   listsort
+   rrandom
+   rurandom
+   rtime
