@@ -1,8 +1,12 @@
 Modules (rlib)
 ==============
 
-There are many general useful modulesin RPython's standard library (also called
-rlib) .
+There are many general useful modules in RPython's standard library (also called
+rlib). For example, ``rmd5`` and ``rsha`` are libraries for hashing. ``rsre`` is a
+regular expression library. In this section, we will use some examples to show
+commonly used libraries.
+
+Here is a full list of rlib.
 
 * buffer
 * cache
@@ -84,6 +88,7 @@ rlib) .
 * types
 * unicodedata
 * unroll
+
 
 .. toctree::
    :hidden:
