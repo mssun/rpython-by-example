@@ -21,7 +21,7 @@ Here is a full list of rlib.
 * jit_libffi
 * jit
 * libffi
-* listsort
+* :doc:`listsort`: stable sorting algorithm (i.e., Timsort)
 * longlong2float
 * mutbuffer
 * nonconst
@@ -43,7 +43,7 @@ Here is a full list of rlib.
 * rjitlog
 * rlocale
 * rmarshal
-* rmd5
+* :doc:`rmd5`: calculate MD5 digest
 * rmmap
 * ropenssl
 * rope
@@ -53,9 +53,9 @@ Here is a full list of rlib.
 * rposix
 * rposix_scandir
 * rposix_stat
-* rrandom
+* :doc:`rrandom`: pseudo-random number generators
 * rrawarray
-* rsha
+* :doc:`rsha`: calculate SHA digest
 * rshrinklist
 * rsignal
 * rsiphash
@@ -70,10 +70,10 @@ Here is a full list of rlib.
 * rstruct
 * rtermios
 * rthread
-* rtime
+* :doc:`rtime`: time-related functions
 * rtimer
 * runicode
-* rurandom
+* :doc:`rurandom`: random number generator depends on OS implementation
 * rvmprof
 * rweaklist
 * rweakref
