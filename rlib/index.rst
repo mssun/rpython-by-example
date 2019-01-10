@@ -31,7 +31,7 @@ Here is a full list of rlib.
 * rawrefcount
 * rawstorage
 * rbigint
-* rbisect
+* :doc:`rbisect`: a basic bisection algorithm
 * rcomplex
 * rdtoa
 * rdynload
