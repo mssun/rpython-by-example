@@ -47,7 +47,7 @@ Here is a full list of rlib.
 * rmmap
 * ropenssl
 * rope
-* rpath
+* :doc:`rpath`: minimal (and limited) RPython version of some functions contained in os.path
 * rpoll
 * rposix_environ
 * rposix
@@ -100,3 +100,6 @@ Here is a full list of rlib.
    rtime
    rmd5
    rsha
+   rbisect
+   rtimer
+   rpath
