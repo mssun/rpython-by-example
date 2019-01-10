@@ -71,7 +71,7 @@ Here is a full list of rlib.
 * rtermios
 * rthread
 * :doc:`rtime`: time-related functions
-* rtimer
+* :doc:`rtimer`: basic functions of timer
 * runicode
 * :doc:`rurandom`: random number generator depends on OS implementation
 * rvmprof
