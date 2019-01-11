@@ -28,12 +28,12 @@ def rarithmetic_example():
     try:
         print ovfcheck_float_to_int(9223372036854775296.0 + 1)
     except OverflowError:
-        print "Exception: OverflowError"
+        print "Exception ovfcheck_float_to_int(): OverflowError"
     # convert to a longlong or raise OverflowError
     try:
         print ovfcheck_float_to_longlong(9223372036854775296.0 + 1)
     except OverflowError:
-        print "Exception: OverflowError"
+        print "Exception ovfcheck_float_to_longlong(): OverflowError"
 
     # utility to converts a string to an integer
     print string_to_int("10", base=10)
