@@ -27,7 +27,7 @@ Here is a full list of rlib.
 * nonconst
 * objectmodel
 * parsing
-* rarithmetic
+* :doc:`rarithmetic`: classes and operations to express integer arithmetic
 * rawrefcount
 * rawstorage
 * rbigint
@@ -95,11 +95,12 @@ Here is a full list of rlib.
    :maxdepth: 2
 
    listsort
-   rrandom
-   rurandom
-   rtime
-   rmd5
-   rsha
+   rarithmetic
    rbisect
-   rtimer
+   rmd5
    rpath
+   rrandom
+   rsha
+   rtime
+   rtimer
+   rurandom
