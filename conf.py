@@ -113,17 +113,21 @@ htmlhelp_basename = 'RPythonByExampledoc'
 # -- Options for LaTeX output ------------------------------------------------
 
 latex_elements = {
+    'sphinxsetup': 'hmargin={1.5in,1.5in}, vmargin={1.2in,1.2in}, marginpar=1in',
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
 
     # The font size ('10pt', '11pt' or '12pt').
     #
-    # 'pointsize': '10pt',
+    'pointsize': '11pt',
 
     # Additional stuff for the LaTeX preamble.
     #
-    # 'preamble': '',
+    'preamble': r'''
+        \usepackage{xeCJK}
+        \fvset{fontsize=\footnotesize}
+    ''',
 
     # Latex figure (float) alignment
     #
@@ -138,6 +142,7 @@ latex_documents = [
      u'Mingshen Sun', 'manual'),
 ]
 
+latex_engine = 'xelatex'
 
 # -- Options for manual page output ------------------------------------------
 
