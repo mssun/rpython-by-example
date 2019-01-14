@@ -1,12 +1,28 @@
 Numeric Types
 =============
 
-Same as Python, there are four numeric types: plain integers (also called
-integers), long integers, floating point numbers, and complex numbers.
+Built-in numeric types
+----------------------
 
-.. todo::
-   The precision difference of plain integers and long integers in RPython is
-   not clear and needs to be further investigated.
+There are three numeric types: plain integers (also called integers), long
+integers, floating point numbers.
+
+.. attention::
+   Complex numbers are not supported as built-in types in RPython. However, you can
+   use RPython libraries to handle complex numbers.
+
+This table describes the details of RPython's built-in types: low-level (LL)
+types, corresponding C types and sizes in memory (64-bit).
+
++-----------+---------+--------+---------------+
+| Type      | LL Type | C Type | Size (64-bit) |
++===========+=========+========+===============+
+| ``int``   | Signed  | long   |            64 |
++-----------+---------+--------+---------------+
+| ``long``  | Signed  | long   |            64 |
++-----------+---------+--------+---------------+
+| ``float`` | Float   | double |            64 |
++-----------+---------+--------+---------------+
 
 All built-in numeric types support the following operations.
 
@@ -15,20 +31,32 @@ All built-in numeric types support the following operations.
 .. attention::
    Some operations or built-in functions can be used in Python but currently not
    supported in RPython such as ``long()``, ``complex()``, ``conjugate()``,
-   ``x ** y``, and ``float(nan)``.
+   ``x ** y``, ``divmode(x, y)``, ``pow(x, y)`` and ``float(nan)``. However,
+   RPython's math library provided some mathematical functions.
+
+   Also, it's worth noting that RPython do constant folding at the compilation
+   time. Therefore, you may found that some built-in functions work with
+   RPython's code in some scenarios. For example, you can write ``pow(123, 456)``
+   in RPython code and the compiler will calculate the value at the compilation
+   time.
 
 The following code illustrated some unsupported operations in RPython.
 
 .. literalinclude:: ../code/numeric_unsupported.py
 
-Bitwise Operations
+.. attention::
+   Besides these three built-in numeric types, RPython provides more types such as
+   ``r_uint``, ``r_int32``, ``r_longlong``, etc in the arithmetic module. For more
+   information, please refer to :doc:`/rlib/rarithmetic` in the rlib section
+
+Bitwise operations
 ------------------
 
 Bitwise operations on integer types in RPython are same as Python.
 
 .. literalinclude:: ../code/numeric_bitwise.py
 
-Additional Methods
+Additional methods
 ------------------
 
 In Python, there are several `additional methods
@@ -44,3 +72,19 @@ not supported.
    *All* additional methods such as ``int.bit_length()`` and
    ``float.float.as_integer_ratio()`` on numeric types are not supported in
    RPython.
+
+Math functions
+--------------
+
+In Python, the ``math`` module provides access to the mathematical functions
+defined by the C standard. For RPython, you can call math functions in the
+similar way.
+
+The math functions contain
+``fabs``, ``log``, ``log10``, ``log1p``, ``copysign``, ``atan2``, ``frexp``,
+``modf``, ``ldexp``, ``pow``, ``fmod``, ``hypot``, ``floor``, ``sqrt``, ``sin``,
+``cos``, ``acos``, ``asin``, ``atan``, ``ceil``, ``cosh``, ``exp``, ``fabs``,
+``sinh``, ``tan``, ``tanh``, ``acosh``, ``asinh``, ``atanh``, ``expm1``.
+These math functions will call corresponding C functions in libc.
+
+.. literalinclude:: ../code/numeric_math.py
