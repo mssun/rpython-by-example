@@ -30,7 +30,7 @@ Here is a full list of rlib.
 * :doc:`rarithmetic`: classes and operations to express integer arithmetic
 * rawrefcount
 * rawstorage
-* rbigint
+* :doc:`rbigint`: functions handle big integer
 * :doc:`rbisect`: a basic bisection algorithm
 * rcomplex
 * rdtoa
@@ -96,6 +96,7 @@ Here is a full list of rlib.
 
    listsort
    rarithmetic
+   rbigint
    rbisect
    rmd5
    rpath

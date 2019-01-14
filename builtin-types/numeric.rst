@@ -49,6 +49,11 @@ The following code illustrated some unsupported operations in RPython.
    ``r_uint``, ``r_int32``, ``r_longlong``, etc in the arithmetic module. For more
    information, please refer to :doc:`/rlib/rarithmetic` in the rlib section
 
+   Not like Python, RPython will not automatically use big integer when
+   appropriate. The big integer type and corresponding operations are provided
+   in the ``rbigint`` library, please refer to :doc:`/rlib/rbigint` in the rlib
+   section.
+
 Bitwise operations
 ------------------
 
