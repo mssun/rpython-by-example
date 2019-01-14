@@ -32,5 +32,8 @@ to understand RPython's restrictions and quickly get started with it.
    builtin-functions/index
    classes/index
    rlib/index
+   gc/index
+   jit/index
    rffi/index
    toy-language/index
+   references
