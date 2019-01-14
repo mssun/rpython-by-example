@@ -31,6 +31,7 @@ to understand RPython's restrictions and quickly get started with it.
    builtin-types/index
    builtin-functions/index
    classes/index
+   flow-control/index
    rlib/index
    gc/index
    jit/index
