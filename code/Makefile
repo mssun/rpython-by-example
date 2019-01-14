@@ -1,4 +1,4 @@
-src = $(wildcard *.py)
+src = $(filter-out $(wildcard *_unsupported.py), $(wildcard *.py))
 obj = $(src:.py=)
 
 RPYFLAGS = -O0
@@ -9,4 +9,5 @@ all: $(obj)
 	$(RPY) $(RPYFLAGS) $^
 
 clean:
-	@rm *-c
+	@rm -f *-c
+	@rm -rf __pycache__
