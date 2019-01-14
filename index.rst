@@ -27,7 +27,7 @@ to understand RPython's restrictions and quickly get started with it.
    :caption: Contents:
 
    Introduction <self>
-   hello-world
+   getting-started
    builtin-types/index
    builtin-functions/index
    classes/index

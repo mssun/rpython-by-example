@@ -1,5 +1,8 @@
-Hello World
-===========
+Getting Started
+===============
+
+Hello, World!
+-------------
 
 This is the source code of a traditional Hello World program written in
 RPython.
