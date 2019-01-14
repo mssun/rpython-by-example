@@ -11,6 +11,7 @@ different, but most of the types are same.
    :hidden:
    :maxdepth: 2
 
+   Introduction <self>
    truth-value-testing
    boolean-operations
    comparisons

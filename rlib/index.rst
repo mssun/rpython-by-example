@@ -94,6 +94,7 @@ Here is a full list of rlib.
    :hidden:
    :maxdepth: 2
 
+   Introduction <self>
    listsort
    rarithmetic
    rbigint
