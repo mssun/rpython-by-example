@@ -7,7 +7,7 @@ Hello, World!
 This is the source code of a traditional Hello World program written in
 RPython.
 
-.. literalinclude:: code/hello_world.py
+.. literalinclude:: ../code/hello_world.py
 
 To compile it, we should first install Python (both CPython and PyPy are OK).
 In addition, we need to obtain the RPython compiler from
@@ -32,7 +32,7 @@ Since RPython syntax is a restricted version of Python, therefore you can
 use any Python interpreter to run the hello world example just like before.
 In this example, we should add an entry point in the script.
 
-.. literalinclude:: code/hello_world_python.py
+.. literalinclude:: ../code/hello_world_python.py
 
 Then, you can run the script as normal with Python.
 

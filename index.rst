@@ -27,7 +27,7 @@ to understand RPython's restrictions and quickly get started with it.
    :caption: Contents:
 
    Introduction <self>
-   getting-started
+   getting-started/index
    builtin-types/index
    builtin-functions/index
    classes/index
@@ -37,4 +37,4 @@ to understand RPython's restrictions and quickly get started with it.
    jit/index
    rffi/index
    toy-language/index
-   references
+   references/index
