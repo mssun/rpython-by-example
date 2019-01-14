@@ -28,10 +28,12 @@ def comparisons():
     if tiger is not kitty: print("is not: Tiger and Kitty are different cats")
 
     # Even though __cmp__() and __gt__() are defined in the Cat class, we still
-    # cannot compare two Cat instances in RPython. Comment the following line
-    # to compile with RPython.
-    if kitty > tiger: print(">: Kitty is taller than Kitty")
-    if tiger != kitty: print("==: Tiger and Kitty are same cats")
+    # cannot compare two Cat instances in RPython. Uncomment the following line
+    # to compile with RPython and you will get an unimplemented operation: 'gt'
+    # error.
+
+    # if kitty > tiger: print(">: Kitty is taller than Kitty")
+    # if tiger != kitty: print("==: Tiger and Kitty are same cats")
 
 def entry_point(argv):
     comparisons()
