@@ -62,6 +62,8 @@ Let us read the detailed explanation on the attributes of
 More Examples
 -------------
 
+Here are three more examples on handling string and callback functions.
+
 .. literalinclude:: ../code/rffi_more.py
 
 .. note::
