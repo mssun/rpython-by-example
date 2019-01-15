@@ -60,7 +60,7 @@ Here is a full list of rlib.
 * rsignal
 * rsiphash
 * rsocket
-* rsre
+* :doc:`rsre`: regular expression matching operations same as the Python ``re`` module
 * rstacklet
 * rstackovf
 * rstack
@@ -102,6 +102,7 @@ Here is a full list of rlib.
    rpath
    rrandom
    rsha
+   rsre
    rtime
    rtimer
    rurandom
