@@ -20,6 +20,18 @@ will automatically compile and link with the C functions.
 
 .. literalinclude:: ../code/rffi_separate_module_sources.py
 
+More Examples
+-------------
+
+Here are three more examples on handling string and callback functions.
+
+.. literalinclude:: ../code/rffi_more.py
+
+.. note::
+   More examples of handling built-in types, string, unicode, opaque type,
+   struct, pre-built constant, callback, and buffer can be found in
+   `rffi's tests <https://bitbucket.org/pypy/pypy/src/default/rpython/rtyper/lltypesystem/test/test_rffi.py>`_.
+
 Usage of ExternalCompilationInfo
 --------------------------------
 
@@ -58,15 +70,3 @@ Let us read the detailed explanation on the attributes of
 * ``use_cpp_linker``: a flag to tell if g++ should be used instead of gcc when
   linking (a bit custom so far)
 * ``platform``: an object that can identify the platform
-
-More Examples
--------------
-
-Here are three more examples on handling string and callback functions.
-
-.. literalinclude:: ../code/rffi_more.py
-
-.. note::
-   More examples of handling built-in types, string, unicode, opaque type,
-   struct, pre-built constant, callback, and buffer can be found in
-   `rffi's tests <https://bitbucket.org/pypy/pypy/src/default/rpython/rtyper/lltypesystem/test/test_rffi.py>`_.
