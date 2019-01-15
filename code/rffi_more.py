@@ -9,7 +9,7 @@ from rpython.translator.tool.cbuild import ExternalCompilationInfo
 eci1 = ExternalCompilationInfo(includes=['string.h'])
 c_strlen = rffi.llexternal('strlen',
                             [rffi.CCHARP],
-                            lltype.Signed,
+                            rffi.SIGNED,
                             compilation_info=eci1)
 
 def rffi_strlen():
