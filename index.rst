@@ -17,7 +17,6 @@ simple application at last.
    classes/index
    flow-control/index
    rlib/index
-   gc/index
    jit/index
    rffi/index
    toy-language/index
