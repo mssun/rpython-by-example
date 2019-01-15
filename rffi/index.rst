@@ -5,14 +5,14 @@ The foreign function interface of RPython is called rffi. With rffi, you can
 declaring low-level external C function, registering function as external,
 defining C types, etc.
 
-Call functions in libc
+Call Functions in libc
 ----------------------
 
 The following example shows how to use rffi to call math function in libc.
 
 .. literalinclude:: ../code/rffi_abs.py
 
-Separate module source
+Separate Module Source
 ----------------------
 
 You can also write C function directly. The C build tool of RPython translator
@@ -59,3 +59,12 @@ Let us read the detailed explanation on the attributes of
   linking (a bit custom so far)
 * ``platform``: an object that can identify the platform
 
+More Examples
+-------------
+
+.. literalinclude:: ../code/rffi_more.py
+
+.. note::
+   More examples of handling built-in types, string, unicode, opaque type,
+   struct, pre-built constant, callback, and buffer can be found in
+   `rffi's tests <https://bitbucket.org/pypy/pypy/src/default/rpython/rtyper/lltypesystem/test/test_rffi.py>`_.
