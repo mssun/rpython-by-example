@@ -26,7 +26,6 @@ to understand RPython's restrictions and quickly get started with it.
    :maxdepth: 2
    :caption: Contents:
 
-   Introduction <self>
    getting-started/index
    builtin-types/index
    builtin-functions/index
