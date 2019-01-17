@@ -8,8 +8,7 @@ only focus on Python 2.7. The built-in types in Python 3 may be a little
 different, but most of the types are same.
 
 .. toctree::
-   :hidden:
-   :maxdepth: 2
+   :maxdepth: 1
 
    truth-value-testing
    boolean-operations

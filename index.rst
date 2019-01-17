@@ -19,5 +19,6 @@ simple application at last.
    rlib/index
    jit/index
    rffi/index
-   toy-language/index
+   template-engine/index
+   rewrite/index
    references/index
