@@ -20,5 +20,5 @@ simple application at last.
    jit/index
    rffi/index
    template-engine/index
-   rewrite/index
+   rewrite-benchmarks/index
    references/index
