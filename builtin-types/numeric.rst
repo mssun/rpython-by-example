@@ -14,15 +14,15 @@ integers, floating point numbers.
 This table describes the details of RPython's built-in types: low-level (LL)
 types, corresponding C types and sizes in memory (64-bit).
 
-+-----------+---------+--------+---------------+
-| Type      | LL Type | C Type | Size (64-bit) |
-+===========+=========+========+===============+
-| ``int``   | Signed  | long   |            64 |
-+-----------+---------+--------+---------------+
-| ``long``  | Signed  | long   |            64 |
-+-----------+---------+--------+---------------+
-| ``float`` | Float   | double |            64 |
-+-----------+---------+--------+---------------+
++-----------+---------+--------+---------------+---------------+
+| Type      | LL Type | C Type | Size (32-bit) | Size (64-bit) |
++===========+=========+========+===============+===============+
+| ``int``   | Signed  | long   |            32 |            64 |
++-----------+---------+--------+---------------+---------------+
+| ``long``  | Signed  | long   |            64 |            64 |
++-----------+---------+--------+---------------+---------------+
+| ``float`` | Float   | double |            64 |            64 |
++-----------+---------+--------+---------------+---------------+
 
 All built-in numeric types support the following operations.
 
