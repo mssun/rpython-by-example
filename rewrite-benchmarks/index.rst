@@ -5,6 +5,9 @@ We are trying to rewrite some Python benchmarks with RPython. As you will see,
 rewriting Python with RPython doesn't require much effort, and we will gain a
 lot of performance improvements.
 
+Fibonacci Number
+----------------
+
 .. literalinclude:: /code/benchmarks/fib.py
 
 .. literalinclude:: /code/benchmarks/fib_rpy.py
@@ -31,6 +34,12 @@ for optimization. These passes include
 
    $ /usr/bin/time -f "%C\t%U\t%M" ./fib-c 40 > /dev/null
    $ ./fib_rpy-c 40  0.40    1704
+
+Binary Tree
+-----------
+
+.. literalinclude:: ../code/benchmarks/binary-tree_rpy.py
+   :diff: ../code/benchmarks/binary-tree.py
 
 Benchmark Results
 -----------------
