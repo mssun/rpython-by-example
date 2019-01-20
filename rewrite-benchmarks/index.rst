@@ -1,26 +1,39 @@
 Rewriting Python Benchmarks
 ===========================
 
-We are trying to rewrite some Python benchmarks with RPython. As you will see,
-rewriting Python with RPython doesn't require much effort, and we will gain a
-lot of performance improvements.
+To understand the performance of RPython, we are trying to rewrite some `Python
+benchmarks <https://bitbucket.org/pypy/benchmarks>`_ with RPython. In this
+section, we use several examples (fibonacci number and binary tree) to
+illustrate tips to rewrite Python code with RPython. As you will see, rewriting
+Python with RPython doesn't require much effort, and we will gain a lot of
+performance improvements.
 
 Fibonacci Number
 ----------------
 
+The following code is to calculate fibonacci number recursively.
+
 .. literalinclude:: /code/benchmarks/fib.py
+
+To run this benchmark, we should add a target function to tell RPython the entry
+point. Also, we change to get ``n`` from arguments instead of hard-coding a
+constant to avoid optimization. The following code can be compiled by RPython.
 
 .. literalinclude:: /code/benchmarks/fib_rpy.py
    :linenos:
    :emphasize-lines: 6-11,13-14,16-18
 
-There are some passes to `simplify flow graph
-<https://bitbucket.org/pypy/pypy/src/default/rpython/translator/simplify.py>`_
-for optimization. These passes include
-``transform_dead_op_vars``, ``eliminate_empty_blocks``, ``remove_assertion_errors``,
-``remove_identical_vars_SSA``, ``constfold_exitswitch``, ``remove_trivial_links``,
-``SSA_to_SSI``, ``coalesce_bool``, ``transform_ovfcheck``, ``simplify_exceptions``,
-``transform_xxxitem``, and ``remove_dead_exceptions``.
+.. note::
+   There are some passes to `simplify flow graph
+   <https://bitbucket.org/pypy/pypy/src/default/rpython/translator/simplify.py>`_
+   for optimization. These passes include
+   ``transform_dead_op_vars``, ``eliminate_empty_blocks``, ``remove_assertion_errors``,
+   ``remove_identical_vars_SSA``, ``constfold_exitswitch``, ``remove_trivial_links``,
+   ``SSA_to_SSI``, ``coalesce_bool``, ``transform_ovfcheck``, ``simplify_exceptions``,
+   ``transform_xxxitem``, and ``remove_dead_exceptions``.
+
+Here, we simply use the GNU ``time`` command to measure the execution time and
+maximum resident set size during the process's lifetime.
 
 .. code-block:: text
 
@@ -38,8 +51,18 @@ for optimization. These passes include
 Binary Tree
 -----------
 
+Rewriting the binary tree benchmark needs a little more efforts. In the Python
+version, it uses a tuple of tuples to represent nodes the the tree. Since
+RPython doesn't allow variable length tuples and mixed types tuples, we write a
+new ``Node`` class to represent nodes in binary trees. In addition, we
+rewrite the ``sum`` built-in function. The following code only shows ``diff`` of
+original Python code and modified RPython version.
+
 .. literalinclude:: ../code/benchmarks/binary-tree_rpy.py
    :diff: ../code/benchmarks/binary-tree.py
+
+Let us measure execution times of the binary tree benchmark with Python and
+PyPy, and RPython rewrite as well.
 
 .. code-block:: text
 
@@ -55,23 +78,29 @@ Binary Tree
 Benchmark Results
 -----------------
 
-+--------------+---------------------+----------+---------------------+----------+----------+----------+----------+
-|              |                     |         PyPy2 v6.0.0           |   RPython (PyPy2 v6.0.0)                  |
-|              |  Python 2.7.15      |                                |                                           |
-+--------------+---------------------+----------+---------------------+----------+---------------------+----------+
-|              |Time (s)             |Time (s)  |Speedup              |Time (s)  |Speedup              |          |
-|              |                     |          |                     |          |                     |Size (KB) |
-+--------------+---------------------+----------+---------------------+----------+---------------------+----------+
-|fib.py        |18.21                |4.77      |3.82                 |0.40      |45.53                |282       |
-+--------------+---------------------+----------+---------------------+----------+---------------------+----------+
-|binary-tree.py|10.45                |1.60      |6.53                 |0.38      |27.50                |301       |
-+--------------+---------------------+----------+---------------------+----------+---------------------+----------+
-|float.py      |11.47                |1.51      |7.60                 |0.57      |20.12                |277       |
-+--------------+---------------------+----------+---------------------+----------+---------------------+----------+
-|fannkuch.py   |3.91                 |0.54      |7.24                 |0.32      |12.22                |282       |
-+--------------+---------------------+----------+---------------------+----------+---------------------+----------+
-|buffer.py     |1.23                 |0.64      |1.92                 |0.52      |2.37                 |284       |
-+--------------+---------------------+----------+---------------------+----------+---------------------+----------+
+In addition to "fibonacci number" and "binary tree", we also rewrite some other
+benchmarks (`source code
+<https://github.com/mesalock-linux/rpython-by-example/tree/master/code/benchmarks>`_).
+The following table summarize the benchmark results.
 
-References:
-  * `The Computer Language Benchmarks Game <https://benchmarksgame-team.pages.debian.net/benchmarksgame/>`_
++--------------+-----------------+----------+-------------+----------+----------+----------+----------+
+|              |                 |         PyPy2 v6.0.0   |   RPython (PyPy2 v6.0.0)                  |
+|              |  Python 2.7.15  |                        |                                           |
++==============+=================+==========+=============+==========+=====================+==========+
+|              |Time (s)         |Time (s)  |Speedup      |Time (s)  |Speedup              |          |
+|              |                 |          |             |          |                     |Size (KB) |
++--------------+-----------------+----------+-------------+----------+---------------------+----------+
+|fib.py        |18.21            |4.77      |3.82         |0.40      |45.53                |282       |
++--------------+-----------------+----------+-------------+----------+---------------------+----------+
+|binary-tree.py|10.45            |1.60      |6.53         |0.38      |27.50                |301       |
++--------------+-----------------+----------+-------------+----------+---------------------+----------+
+|float.py      |11.47            |1.51      |7.60         |0.57      |20.12                |277       |
++--------------+-----------------+----------+-------------+----------+---------------------+----------+
+|fannkuch.py   |3.91             |0.54      |7.24         |0.32      |12.22                |282       |
++--------------+-----------------+----------+-------------+----------+---------------------+----------+
+|buffer.py     |1.23             |0.64      |1.92         |0.52      |2.37                 |284       |
++--------------+-----------------+----------+-------------+----------+---------------------+----------+
+
+As you can see, the average speedup of RPython compared to Python 2.7.15 is
+about 21. Moreover, compared to the very large Python interpreter, the size of
+RPython binary is pretty small.
