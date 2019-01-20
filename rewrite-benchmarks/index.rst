@@ -25,21 +25,32 @@ for optimization. These passes include
 .. code-block:: text
 
    $ /usr/bin/time -f "%C\t%U\t%M" python fib.py > /dev/null
-   $ python fib.py   18.21   5956
+   python fib.py   18.21   5956
 
    $ /usr/bin/time -f "%C\t%U\t%M" pypy fib.py > /dev/null
-   $ pypy fib.py     4.77    112960
+   pypy fib.py     4.77    112960
 
    $ rpython fib_rpy.py
 
    $ /usr/bin/time -f "%C\t%U\t%M" ./fib-c 40 > /dev/null
-   $ ./fib_rpy-c 40  0.40    1704
+   ./fib_rpy-c 40  0.40    1704
 
 Binary Tree
 -----------
 
 .. literalinclude:: ../code/benchmarks/binary-tree_rpy.py
    :diff: ../code/benchmarks/binary-tree.py
+
+.. code-block:: text
+
+   $ /usr/bin/time -f "%C\t%U\t%M" python binary-tree.py > /dev/null
+   python binary-tree.py   10.45   60432
+
+   $ /usr/bin/time -f "%C\t%U\t%M" pypy binary-tree.py > /dev/null
+   pypy binary-tree.py     1.60    187256
+
+   $ /usr/bin/time -f "%C\t%U\t%M" ./binary-tree_rpy-c 17 > /dev/null
+   ./binary-tree_rpy-c 17  0.38    68312
 
 Benchmark Results
 -----------------
