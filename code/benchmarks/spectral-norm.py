@@ -7,9 +7,7 @@
 # Dirtily sped up by Simon Descarpentries
 # Concurrency by Jason Stitt
 
-from math            import sqrt
 from itertools       import izip
-import itertools
 
 def eval_A (i, j):
     return 1.0 / ((i + j) * (i + j + 1) / 2 + i + 1)
@@ -52,6 +50,6 @@ def main(n):
         for ue, ve in izip (u, v):
             vBv += ue * ve
             vv  += ve * ve
-    
+
 if __name__ == "__main__":
     main(400)
