@@ -108,8 +108,7 @@ benchmarks (`source code
 The following table summarize the benchmark results.
 
 +-----------------+-----------------+----------+-------------+----------+----------+----------+----------+
-|                 |                 |         PyPy2 v6.0.0   |   RPython (PyPy2 v6.0.0)                  |
-|                 |  Python 2.7.15  |                        |                                           |
+|                 |  Python 2.7.15  | PyPy2 v6.0.0           |   RPython (PyPy2 v6.0.0)                  |
 +=================+=================+==========+=============+==========+=====================+==========+
 |                 |Time (s)         |Time (s)  |Speedup      |Time (s)  |Speedup              |          |
 |                 |                 |          |             |          |                     |Size (KB) |
