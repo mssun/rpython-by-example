@@ -14,7 +14,6 @@ Here, we briefly introduce some JIT-related data structures, functions, and deco
 
 .. literalinclude:: ../code/bf.py
    :linenos:
-   :emphasize-lines: 16-18, 20-22, 29
 
 JitDriver
 -------------
