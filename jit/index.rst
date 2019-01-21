@@ -4,6 +4,8 @@ JIT
 Simple Example
 --------------
 
+.. literalinclude:: ../code/bf.py
+
 JitDriver
 -------------
 
