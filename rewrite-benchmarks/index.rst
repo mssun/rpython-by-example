@@ -75,6 +75,30 @@ PyPy, and RPython rewrite as well.
    $ /usr/bin/time -f "%C\t%U\t%M" ./binary-tree_rpy-c 17 > /dev/null
    ./binary-tree_rpy-c 17  0.38    68312
 
+Spectral Norm
+-------------
+
+For the spectral norm benchmark, we made the following changes:
+
+* rewrite map function
+* rewrite generators
+* use list instead of tuple
+* use loop to rewrite izip function
+
+.. literalinclude:: ../code/benchmarks/spectral-norm_rpy.py
+   :diff: ../code/benchmarks/spectral-norm.py
+
+.. code-block:: text
+
+   $ /usr/bin/time -f "%C\t%U\t%M" python spectral-norm.py > /dev/null
+   python spectral-norm.py 34.83   6140
+
+   $ /usr/bin/time -f "%C\t%U\t%M" pypy spectral-norm.py > /dev/null
+   pypy spectral-norm.py   1.20    81016
+
+   $ /usr/bin/time -f "%C\t%U\t%M" ./spectral-norm_rpy-c 17 > /dev/null
+   ./spectral-norm_rpy-c 400       0.26    7892
+
 Benchmark Results
 -----------------
 
