@@ -18,6 +18,11 @@ Here, we briefly introduce some JIT-related data structures, functions, and deco
 JitDriver
 -------------
 
+An interpreter wishing to use the RPython JIT generator must define a list of
+green variables and a list of red variables. The green variables are loop
+constants. They are used to identify the current loop. Red variables are for
+everything else used in the execution loop.
+
 JIT Decorators and Functions
 ----------------------------
 
