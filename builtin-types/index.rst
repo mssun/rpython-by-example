@@ -19,3 +19,4 @@ different, but most of the types are same.
    set
    mapping
    file
+   primitive-type-cheat-sheet

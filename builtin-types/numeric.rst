@@ -24,6 +24,9 @@ types, corresponding C types and sizes in memory (64-bit).
 | ``float`` | Float   | double |            64 |            64 |
 +-----------+---------+--------+---------------+---------------+
 
+For more primitive types, you can find them in the
+:doc:`primitive type cheat sheet <primitive-type-cheat-sheet>` section.
+
 Note that the ``int`` type and ``long`` type are same type in RPython, which
 have same low level representation and size.
 
