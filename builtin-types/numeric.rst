@@ -19,10 +19,13 @@ types, corresponding C types and sizes in memory (64-bit).
 +===========+=========+========+===============+===============+
 | ``int``   | Signed  | long   |            32 |            64 |
 +-----------+---------+--------+---------------+---------------+
-| ``long``  | Signed  | long   |            64 |            64 |
+| ``long``  | Signed  | long   |            32 |            64 |
 +-----------+---------+--------+---------------+---------------+
 | ``float`` | Float   | double |            64 |            64 |
 +-----------+---------+--------+---------------+---------------+
+
+Note that the ``int`` type and ``long`` type are same type in RPython, which
+have same low level representation and size.
 
 All built-in numeric types support the following operations.
 
