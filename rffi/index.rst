@@ -60,6 +60,8 @@ List Conversion
    * free_charpp: frees list of char**, NULL terminated
    * charpp2liststr: char** NULL terminated -> list[str].  No freeing is done.
 
+.. literalinclude:: ../code/rffi_liststr.py
+
 Other Functions
 ---------------
 
