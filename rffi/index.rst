@@ -20,22 +20,11 @@ will automatically compile and link with the C functions.
 
 .. literalinclude:: ../code/rffi_separate_module_sources.py
 
-More Examples
--------------
-
-Here are three more examples on handling string and callback functions.
-
-.. literalinclude:: ../code/rffi_more.py
-
-.. note::
-   More examples of handling built-in types, string, unicode, opaque type,
-   struct, pre-built constant, callback, and buffer can be found in
-   `rffi's tests <https://bitbucket.org/pypy/pypy/src/default/rpython/rtyper/lltypesystem/test/test_rffi.py>`_.
-
-String Conversion
+String Operations
 -----------------
 
-.. todo:: Need more detailed examples and explanation.
+There are several functions to handle string conversion including ASCII and
+unicode encodings:
 
 .. code-block:: text
 
@@ -49,10 +38,16 @@ String Conversion
      alloc_unicodebuffer, unicode_from_buffer, keep_unicodebuffer_alive_until_here,
      wcharp2unicoden, wcharpsize2unicode, unicode2wchararray, unicode2rawmem,
 
+Here are two examples illustrate the usage of ``str2charp`` and ``charp2str``.
+
+.. literalinclude:: ../code/rffi_str.py
+
 List Conversion
 ---------------
 
-.. todo:: Need more detailed examples and explanation.
+List of strings is commonly used in some cases, there are two pair of functions:
+``liststr2charpp`` and ``charpp2liststr``. Remember to free the list using
+``free_charpp``.
 
 .. code-block:: text
 
@@ -60,10 +55,14 @@ List Conversion
    * free_charpp: frees list of char**, NULL terminated
    * charpp2liststr: char** NULL terminated -> list[str].  No freeing is done.
 
+Here is an example of calculating the total length of a list of strings.
+
 .. literalinclude:: ../code/rffi_liststr.py
 
 Other Functions
 ---------------
+
+There are other useful functions like scoped str conversion and buffer allocation.
 
 .. todo:: Need more detailed examples and explanation.
 
@@ -77,6 +76,19 @@ Other Functions
      scoped_alloc_unicodebuffer
    * c_memcpy, c_memset
    * get_raw_address_of_string
+
+More Examples
+-------------
+
+Here are three more examples on handling string and callback functions.
+
+.. literalinclude:: ../code/rffi_more.py
+
+.. note::
+   More examples of handling built-in types, string, unicode, opaque type,
+   struct, pre-built constant, callback, and buffer can be found in
+   `rffi's tests <https://bitbucket.org/pypy/pypy/src/default/rpython/rtyper/lltypesystem/test/test_rffi.py>`_.
+
 
 Usage of ExternalCompilationInfo
 --------------------------------
