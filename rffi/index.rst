@@ -32,6 +32,50 @@ Here are three more examples on handling string and callback functions.
    struct, pre-built constant, callback, and buffer can be found in
    `rffi's tests <https://bitbucket.org/pypy/pypy/src/default/rpython/rtyper/lltypesystem/test/test_rffi.py>`_.
 
+String Conversion
+-----------------
+
+.. todo:: Need more detailed examples and explanation.
+
+.. code-block:: text
+
+   * str2charp, free_charp, charp2str,
+     get_nonmovingbuffer, free_nonmovingbuffer, get_nonmovingbuffer_final_null,
+     alloc_buffer, str_from_buffer, keep_buffer_alive_until_here,
+     charp2strn, charpsize2str, str2chararray, str2rawmem,
+
+   * unicode2wcharp, free_wcharp, wcharp2unicode,
+     get_nonmoving_unicodebuffer, free_nonmoving_unicodebuffer,
+     alloc_unicodebuffer, unicode_from_buffer, keep_unicodebuffer_alive_until_here,
+     wcharp2unicoden, wcharpsize2unicode, unicode2wchararray, unicode2rawmem,
+
+List Conversion
+---------------
+
+.. todo:: Need more detailed examples and explanation.
+
+.. code-block:: text
+
+   * liststr2charpp: list[str] -> char**, NULL terminated
+   * free_charpp: frees list of char**, NULL terminated
+   * charpp2liststr: char** NULL terminated -> list[str].  No freeing is done.
+
+Other Functions
+---------------
+
+.. todo:: Need more detailed examples and explanation.
+
+.. code-block:: text
+
+   * size_and_sign, sizeof, offsetof
+   * structcopy
+   * setintfiled, getintfield
+   * scoped_str2charp, scoped_unicode2wcharp, scoped_nonmovingbuffer,
+     scoped_view_charp, schoped_nonmoving_unicodebuffer, scoped_alloc_buffer,
+     scoped_alloc_unicodebuffer
+   * c_memcpy, c_memset
+   * get_raw_address_of_string
+
 Usage of ExternalCompilationInfo
 --------------------------------
 
@@ -70,3 +114,127 @@ Let us read the detailed explanation on the attributes of
 * ``use_cpp_linker``: a flag to tell if g++ should be used instead of gcc when
   linking (a bit custom so far)
 * ``platform``: an object that can identify the platform
+
+FFI Types
+---------
+
+Since there is no formal definitions of FFI types in docs and source code (some
+definitions are dynamically generated), here is a dump of all definitions in
+RPython FFI types. It is quit easy to understand the types based on the names.
+
+.. todo:: Need more detailed examples and explanation.
+
+.. code-block:: text
+
+   # type definitions
+   AroundFnPtr
+   CCHARP
+   CCHARPP
+   CHAR
+   CONST_CCHARP
+   CWCHARP
+   CWCHARPP
+   DOUBLE
+   DOUBLEP
+   FLOAT
+   FLOATP
+   INT
+   INTMAX_T
+   INTMAX_TP
+   INTP
+   INTPTR_T
+   INTPTR_TP
+   INT_FAST16_T
+   INT_FAST16_TP
+   INT_FAST32_T
+   INT_FAST32_TP
+   INT_FAST64_T
+   INT_FAST64_TP
+   INT_FAST8_T
+   INT_FAST8_TP
+   INT_LEAST16_T
+   INT_LEAST16_TP
+   INT_LEAST32_T
+   INT_LEAST32_TP
+   INT_LEAST64_T
+   INT_LEAST64_TP
+   INT_LEAST8_T
+   INT_LEAST8_TP
+   INT_real
+   LONG
+   LONGDOUBLE
+   LONGDOUBLEP
+   LONGLONG
+   LONGLONGP
+   LONGP
+   LONG_BIT
+   MODE_T
+   MODE_TP
+   NULL
+   PID_T
+   PID_TP
+   PTRDIFF_T
+   PTRDIFF_TP
+   SHORT
+   SHORTP
+   SIGNED
+   SIGNEDCHAR
+   SIGNEDCHARP
+   SIGNEDP
+   SIGNEDPP
+   SIZE_T
+   SIZE_TP
+   SSIZE_T
+   SSIZE_TP
+   TIME_T
+   TIME_TP
+   UCHAR
+   UCHARP
+   UINT
+   UINTMAX_T
+   UINTMAX_TP
+   UINTP
+   UINTPTR_T
+   UINTPTR_TP
+   UINT_FAST16_T
+   UINT_FAST16_TP
+   UINT_FAST32_T
+   UINT_FAST32_TP
+   UINT_FAST64_T
+   UINT_FAST64_TP
+   UINT_FAST8_T
+   UINT_FAST8_TP
+   UINT_LEAST16_T
+   UINT_LEAST16_TP
+   UINT_LEAST32_T
+   UINT_LEAST32_TP
+   UINT_LEAST64_T
+   UINT_LEAST64_TP
+   UINT_LEAST8_T
+   UINT_LEAST8_TP
+   ULONG
+   ULONGLONG
+   ULONGLONGP
+   ULONGP
+   USHORT
+   USHORTP
+   VOID*
+   VOID*P
+   VOIDP
+   VOIDPP
+   WCHAR_T
+   WCHAR_TP
+   __INT128_T
+   __INT128_TP
+
+   # functions/classes to create a type
+   CArray
+   CArrayPtr
+   CCallback
+   CConstant
+   CExternVariable
+   CFixedArray
+   COpaque
+   COpaquePtr
+   CStruct
+   CStructPtr
