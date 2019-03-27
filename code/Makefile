@@ -2,6 +2,7 @@ src = $(filter-out $(wildcard *_unsupported.py) $(wildcard error_*), $(wildcard 
 obj = $(src:.py=)
 
 RPYFLAGS = -O0
+RPY ?= rpython
 
 all: $(obj)
 
