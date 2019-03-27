@@ -1,4 +1,4 @@
-src = $(filter-out $(wildcard *_unsupported.py), $(wildcard *.py))
+src = $(filter-out $(wildcard *_unsupported.py) $(wildcard error_*), $(wildcard *.py))
 obj = $(src:.py=)
 
 RPYFLAGS = -O0
