@@ -11,16 +11,11 @@ def numeric_unsupported():
     # a complex number with real part re, imaginary part im. im defaults to zero.
     print "complex(x) =", complex(re, im)
 
-    j = 1j       # yield an imaginary number (complex number with zero real part)
-    print "complex: 1j =", j
-
     c = 0
     # conjugate of the complex number c. (Identity on real numbers)
     print "c.conjugate() =", c.conjugate()
 
     print "x ** y =", x ** y     # x to the power y
-    print "divmod(x, y) =", divmod(x, y)  # the pair (x // y, x % y)
-    print "pow(x, y) =", pow(x, y)        # x to the power y
 
     # float also accepts the strings "nan" and "inf" with an optional prefix
     # "+" or "-" for Not a Number (NaN) and positive or negative infinity.

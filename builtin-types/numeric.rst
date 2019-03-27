@@ -46,7 +46,14 @@ All built-in numeric types support the following operations.
    in RPython code and the compiler will calculate the value at the compilation
    time.
 
-The following code illustrated some unsupported operations in RPython.
+The code snippet shows that although RPython does not support above mentioned
+built-in functions, it still can do constant folding. For instance, ``divmod(x, y)``
+will not yield any compilation error if x and y are constants.
+
+.. literalinclude:: ../code/numeric_constfold.py
+
+In addition to above functions, the following code illustrated some other
+unsupported operations in RPython but supported in CPython.
 
 .. literalinclude:: ../code/numeric_unsupported.py
 
