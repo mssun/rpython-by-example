@@ -18,7 +18,8 @@ string
 
 Only a few string methods are supported in RPython. Besides the limited methods
 in RPython, there are also some restrictions of indexing, slicing, and string
-formating.
+formating. Also, note that the type of items in a list should be same, and you
+cannot mix types in a RPython list.
 The following examples show some supported methods and usages in RPython.
 
 .. literalinclude:: ../code/strings.py

@@ -22,6 +22,10 @@ def lists_unsupported():
     l.sort()
     print l.count(103)
 
+    # Mixing types in a list is not supported in RPython
+    l.append("mix integer with string types in a list")
+    print l
+
 def entry_point(argv):
     lists_unsupported()
     return 0
