@@ -19,6 +19,7 @@ simple application at last.
    rlib/index
    jit/index
    rffi/index
+   error/index
    rewrite-benchmarks/index
    examples/index
    references/index
