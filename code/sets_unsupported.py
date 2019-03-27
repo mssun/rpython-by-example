@@ -1,4 +1,5 @@
-# Operations which are not supported by RPython.
+################### UNSUPPORTED IN RPYTHON ######################
+
 def sets_unsupported():
     s1 = set(['foo', 'bar', 'baz', 'foo'])
     s2 = set(['foo', 'hello', 'world', 'foo'])

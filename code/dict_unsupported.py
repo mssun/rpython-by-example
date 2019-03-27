@@ -1,4 +1,5 @@
-# Operations which are not supported by RPython.
+################### UNSUPPORTED IN RPYTHON ######################
+
 def dict_unsupported():
     d1 = dict(one=1, two=2, three=3)
     d2 = dict({'one': 1, 'two': 2, 'three': 3})

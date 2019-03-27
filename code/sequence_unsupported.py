@@ -1,4 +1,5 @@
-# Operations which are not supported by RPython.
+################### UNSUPPORTED IN RPYTHON ######################
+
 def sequence_unsupported():
     l = ["this", "is", "a", "list", "of", "strings"]
 
