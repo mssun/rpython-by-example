@@ -1,3 +1,4 @@
+# Operations which are not supported by RPython.
 def sequence_unsupported():
     l = ["this", "is", "a", "list", "of", "strings"]
 

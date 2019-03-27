@@ -1,3 +1,4 @@
+# Operations which are not supported by RPython.
 def lists_unsupported():
     l = [0, 1, 2, 3, 4]
 

@@ -1,3 +1,4 @@
+# Operations which are not supported by RPython.
 def numeric_unsupported():
     """Operations and functions supported in Python but not supported in RPython."""
     x = -1024

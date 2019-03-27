@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+# Operations which are not supported by RPython.
 def strings_unsupported():
     s = "this is a string"
 
