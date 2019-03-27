@@ -15,7 +15,7 @@ def numeric_no_constfold(x, y):
 
 def entry_point(argv):
     numeric_constfold()
-    numeric_no_constfold(int(argv[1]), int(argv[2]))    # compilation error, comment this function to try constant folding
+    # numeric_no_constfold(int(argv[1]), int(argv[2]))    # compilation error, comment this function to try constant folding
     return 0
 
 def target(*args): return entry_point
