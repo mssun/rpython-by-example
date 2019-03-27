@@ -1,8 +1,7 @@
-Implementing a Template Engine
-==============================
+Examples with RPython
+=====================
 
-Design a toy language and use RPython to implement an interpreter (with JIT)
-with RPython.
+Here are some examples implemented with RPython:
 
 References:
   * `Tutorial: Writing an Interpreter with PyPy, Part 1 <https://morepypy.blogspot.com/2011/04/tutorial-writing-interpreter-with-pypy.html>`_

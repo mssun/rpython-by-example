@@ -19,6 +19,6 @@ simple application at last.
    rlib/index
    jit/index
    rffi/index
-   template-engine/index
    rewrite-benchmarks/index
+   examples/index
    references/index
