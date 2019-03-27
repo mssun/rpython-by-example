@@ -1,6 +1,9 @@
 Flow Control
 ============
 
+.. todo:: This section is not finished yet. Provides more examples and
+          explanations.
+
 variables
 
     variables should contain values of at most one type as described in Object
