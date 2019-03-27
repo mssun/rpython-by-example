@@ -90,7 +90,7 @@ tuple
 
 Tuples in RPython are very different. There are many restrictions to use tuples.
 
-.. literalinclude:: ../code/lists_unsupported.py
+.. literalinclude:: ../code/tuples.py
 
 The restrictions can be summarized as follows.
 
