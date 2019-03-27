@@ -1,0 +1,13 @@
+language: python
+python:
+  - "2.7"
+install:
+  - sudo apt-get install pypy libgc-dev
+  - pip install sphinx sphinx_rtd_theme
+script:
+  - make html
+  - wget https://bitbucket.org/pypy/pypy/downloads/pypy2.7-v7.1.0-src.tar.bz2
+  - tar jxvf pypy2.7-v7.1.0-src.tar.bz2
+  - export RPY=$(pwd)/pypy2.7-v7.1.0-src/rpython/bin/rpython
+  - make -C code
+  - make -C code/benchmarks
