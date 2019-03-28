@@ -9,8 +9,8 @@ install:
   - pip install sphinx sphinx_rtd_theme
 script:
   - make html
-  - wget https://bitbucket.org/pypy/pypy/downloads/$(PYPY_VERSION)-src.tar.bz2
-  - tar jxf $(PYPY_VERSION)-src.tar.bz2
-  - export RPY=$(pwd)/$(PYPY_VERSION)-src/rpython/bin/rpython
+  - wget https://bitbucket.org/pypy/pypy/downloads/$PYPY_VERSION-src.tar.bz2
+  - tar jxf $PYPY_VERSION-src.tar.bz2
+  - export RPY=$(pwd)/$PYPY_VERSION-src/rpython/bin/rpython
   - make -C code
   - make -C code/benchmarks
