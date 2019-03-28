@@ -42,7 +42,28 @@ generators
     generators are supported, but their exact scope is very limited. you can’t
     merge two different generator in one control point.
 
-exceptions
+Exceptions
+----------
 
-    fully supported. see below Exception rules for restrictions on exceptions
-    raised by built-in operations
+Python exceptions are fully supported. For example, you can catch exceptions by
+the ``except`` keyword following a specific exception class.
+
+.. literalinclude:: ../code/errors_exceptions.py
+
+You can also use the ``raise`` keyword to raise exceptions. The ``finally`` keyword
+is used to do some cleanup actions.
+
+.. literalinclude:: ../code/handle_exceptions.py
+
+.. attention::
+   There is one special difference in the exception handling on "simple cases".
+   In `RPython document
+   <https://rpython.readthedocs.io/en/latest/rpython.html#exception-rules>`_, it
+   says by default, **code with no exception handlers does
+   not raise exceptions**. By supplying an exception handler, you ask for error
+   checking. Without, you assure the system that the operation cannot fail. This
+   rule does not apply to function calls: any called function is assumed to be
+   allowed to raise any exception.
+
+.. todo::
+   MesaPy added mandatory ``IndexError`` checks. Give some details here.
