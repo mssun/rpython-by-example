@@ -16,8 +16,8 @@ is located at ``pypy/rpython/bin/rpython``.
 
 .. note::
    All examples in this doc are tested with the RPython compiler in PyPy's
-   codebase (tag: ``release-pypy2.7-v6.0.0``) , and with CPython or PyPy
-   2.7 installed.
+   codebase (tag: ``release-pypy2.7-v6.0.0`` and ``release-pypy2.7-v7.1.0``),
+   and with CPython or PyPy 2.7 installed.
 
 Now, we can compile our first hello world example by running:
 
