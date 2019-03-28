@@ -174,6 +174,7 @@ In addition to report ``FlowingError``, the compiler will give you some detailed
 explanation.
 
 .. code-block:: text
+   :emphasize-lines: 3
 
     [translation:ERROR] FlowingError:
 
@@ -187,6 +188,33 @@ explanation.
     Processing block:
     block@9[argv_0] is a <class 'rpython.flowspace.flowcontext.SpamBlock'>
     in (flowing_error:4)entry_point
+    containing the following operations:
+          v0 = getitem(argv_0, (1))
+          v1 = simple_call((function compiler_error), v0)
+    --end--
+
+When RPython detected a control flow which always raise an exception, it will
+report ``FlowingError``.
+
+.. literalinclude:: ../code/flowing2_error.py
+
+In the above example, ``1/0`` always raises a ``ZeroDivisionError`` exception.
+
+.. code-block:: text
+   :emphasize-lines: 3
+
+    [translation:ERROR] FlowingError:
+
+    div(1, 0) always raises <type 'exceptions.ZeroDivisionError'>: integer division by zero
+
+    In <FunctionGraph of (flowing2_error:1)compiler_error at 0x66bd1d8>:
+    Happened at file flowing2_error.py line 2
+
+            n = 10 * (1/0)
+
+    Processing block:
+    block@9[argv_0] is a <class 'rpython.flowspace.flowcontext.SpamBlock'>
+    in (flowing2_error:5)entry_point
     containing the following operations:
           v0 = getitem(argv_0, (1))
           v1 = simple_call((function compiler_error), v0)
