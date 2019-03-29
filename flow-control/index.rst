@@ -37,7 +37,7 @@ Constants
 ---------
 
 .. note::
-    all module globals are considered constants. Their binding must not be
+    All module globals are considered constants. Their binding must not be
     changed at run-time. Moreover, global (i.e. prebuilt) lists and dictionaries
     are supposed to be immutable: modifying e.g. a global list will give
     inconsistent results. However, global instances don’t have this restriction,
@@ -48,13 +48,13 @@ Control structures
 ------------------
 
 .. note::
-    all allowed, for loops restricted to builtin types, generators very restricted.
+    All allowed, for loops restricted to builtin types, generators very restricted.
 
 Range
 -----
 
 .. note::
-    range and xrange are identical. range does not necessarily create an array,
+    Range and xrange are identical. range does not necessarily create an array,
     only if the result is modified. It is allowed everywhere and completely
     implemented. The only visible difference to CPython is the inaccessibility
     of the xrange fields start, stop and step.
@@ -63,13 +63,13 @@ Definitions
 -----------
 
 .. note::
-    run-time definition of classes or functions is not allowed.
+    Run-time definition of classes or functions is not allowed.
 
 Generators
 ----------
 
 .. note::
-    generators are supported, but their exact scope is very limited. you can’t
+    Generators are supported, but their exact scope is very limited. you can’t
     merge two different generator in one control point.
 
 Exceptions
