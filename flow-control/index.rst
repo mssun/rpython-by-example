@@ -4,17 +4,39 @@ Flow Control
 .. todo:: This section is not finished yet. Provides more examples and
           explanations.
 
-variables
+Variables
+---------
 
-    variables should contain values of at most one type as described in Object
-    restrictions at each control flow point, that means for example that joining
-    control paths using the same variable to contain both a string and a int
-    must be avoided. It is allowed to mix None (basically with the role of a
-    null pointer) with many other types: wrapped objects, class instances,
-    lists, dicts, strings, etc. but not with int, floats or tuples.
+Variables should contain values of at most *one type* at each control flow
+point. For example, this means that joining control paths using the same
+variable to contain both a string and a int must be avoided.
 
-constants
+Let's look at this example code.
 
+.. literalinclude:: ../code/union_error.py
+
+The control flow graph of the ``compiler_error`` function is shown in the
+following figure.
+
+.. figure:: ../images/union_error.png
+   :width: 60%
+   :align: center
+
+   Merge point of a control flow with different types.
+
+As you can see, at the merge point (highlighted in green), ``v2`` can be
+either integer ``1`` or an empty string ``''``. this violate the RPython's
+restriction.
+
+It is allowed to mix ``None`` with many other types: wrapped objects, class
+instances, lists, dicts, strings, etc., but not with int, floats or tuples.
+
+.. literalinclude:: ../code/flow_control_variables.py
+
+Constants
+---------
+
+.. note::
     all module globals are considered constants. Their binding must not be
     changed at run-time. Moreover, global (i.e. prebuilt) lists and dictionaries
     are supposed to be immutable: modifying e.g. a global list will give
@@ -22,23 +44,31 @@ constants
     so if you need mutable global state, store it in the attributes of some
     prebuilt singleton instance.
 
-control structures
+Control structures
+------------------
 
+.. note::
     all allowed, for loops restricted to builtin types, generators very restricted.
 
-range
+Range
+-----
 
+.. note::
     range and xrange are identical. range does not necessarily create an array,
     only if the result is modified. It is allowed everywhere and completely
     implemented. The only visible difference to CPython is the inaccessibility
     of the xrange fields start, stop and step.
 
-definitions
+Definitions
+-----------
 
+.. note::
     run-time definition of classes or functions is not allowed.
 
-generators
+Generators
+----------
 
+.. note::
     generators are supported, but their exact scope is very limited. you can’t
     merge two different generator in one control point.
 
