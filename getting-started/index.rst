@@ -17,7 +17,17 @@ is located at ``pypy/rpython/bin/rpython``.
 .. note::
    All examples in this doc are tested with the RPython compiler in PyPy's
    codebase (tag: ``release-pypy2.7-v6.0.0`` and ``release-pypy2.7-v7.1.0``),
-   and with CPython or PyPy 2.7 installed.
+   and with CPython 2.7 (aka. Python 2.7) or PyPy 2.7 installed.
+
+   .. code-block:: shell
+
+      $ sudo apt-get install python2 libgc-dev
+      $ sudo apt-get install libgc-dev              # if you want to use Boehm GC
+      $ wget https://bitbucket.org/pypy/pypy/downloads/pypy2.7-v7.1.0-src.tar.bz2
+      $ tar jxf pypy2.7-v7.1.0-src.tar.bz2
+      $ export RPY=$(pwd)/pypy2.7-v7.1.0-src/rpython/bin/rpython
+      $ export PATH=$PATH:$(pwd)/pypy2.7-v7.1.0-src/rpython/bin
+      $ cd code && make hello_world
 
 Now, we can compile our first hello world example by running:
 
