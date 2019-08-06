@@ -12,3 +12,13 @@ steps:
   - export RPY=$(pwd)/pypy2.7-v7.1.0-src/rpython/bin/rpython
   - make -C code
   - make -C code/benchmarks
+  - make html
+  - mkdir -p ~/.ssh && echo $DOC_KEY | base64 -d > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+  - cd _build/html && tar czf doc.tar.gz * && ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $DOC_USERNAME@$DOC_HOSTNAME "cd www/mesapy.org/rpython-by-example && rm -rf * && tar -xz" < doc.tar.gz
+  environment:
+    DOC_KEY:
+      from_secret: DOC_KEY
+    DOC_USERNAME:
+      from_secret: DOC_USERNAME
+    DOC_HOSTNAME:
+      from_secret: DOC_HOSTNAME
