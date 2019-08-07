@@ -1,7 +1,7 @@
 rbigint
 =======
 
-rbigint contains functions of bit integers such as math functions, converting
+rbigint contains functions of big integers such as math functions, converting
 between types, comparison, etc.
 
 .. literalinclude:: ../code/rbigint.py
