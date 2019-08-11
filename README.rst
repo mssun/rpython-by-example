@@ -20,3 +20,7 @@ Please use following commands to install dependencies, build RPyBE in HTML/PDF, 
    $ make                                                # compile all RPython code
    $ make hello_world                                    # compile a specific example
    $ ./hello_world-c                                     # run the example
+
+Rendered:
+  * HTML: `<https://mesapy.org/rpython-by-example/>`_.
+  * PDF: `<https://mesapy.org/rpython-by-example/RPythonByExample.pdf>`_.

@@ -23,7 +23,7 @@ steps:
 - name: build
   image: python
   commands:
-  - apt-get update && apt-get install -y -q pypy libgc-dev
+  - apt-get update && apt-get install -y -q pypy libgc-dev texlive-full
   - pip install sphinx sphinx_rtd_theme
   - wget https://bitbucket.org/pypy/pypy/downloads/pypy2.7-v7.1.0-src.tar.bz2
   - tar jxf pypy2.7-v7.1.0-src.tar.bz2
@@ -36,8 +36,10 @@ steps:
   - apt-get update && apt-get install -y -q pypy libgc-dev
   - pip install sphinx sphinx_rtd_theme
   - make html
+  - make latexpdf
   - mkdir -p ~/.ssh && echo $DOC_KEY | base64 -d > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
   - cd _build/html && tar czf doc.tar.gz * && ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $DOC_USERNAME@$DOC_HOSTNAME "cd www/mesapy.org/rpython-by-example && rm -rf * && tar -xz" < doc.tar.gz
+  - scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no _build/latex/RPythonByExample.pdf $DOC_USERNAME@$DOC_HOSTNAME:~/www/mesapy.org/rpython-by-example/
   environment:
     DOC_KEY:
       from_secret: DOC_KEY
