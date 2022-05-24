@@ -22,5 +22,4 @@ Please use following commands to install dependencies, build RPyBE in HTML/PDF, 
    $ ./hello_world-c                                     # run the example
 
 Rendered:
-  * HTML: `<https://mesapy.org/rpython-by-example/>`_
-  * PDF: `<https://mesapy.org/rpython-by-example/RPythonByExample.pdf>`_
+  * HTML: `<https://mssun.github.io/rpython-by-example/>`_
