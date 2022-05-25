@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rewriting Python Benchmarks &mdash; RPython By Example  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Examples with RPython" href="../examples/index.html" />
+    <link rel="prev" title="Compilation Errors" href="../error/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> RPython By Example
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../builtin-types/index.html">Built-in Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../builtin-functions/index.html">Built-in Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/index.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow-control/index.html">Flow Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rlib/index.html">Modules (rlib)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jit/index.html">JIT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rffi/index.html">Foreign Function Interface (rffi)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error/index.html">Compilation Errors</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Rewriting Python Benchmarks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fibonacci-number">Fibonacci Number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#binary-tree">Binary Tree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spectral-norm">Spectral Norm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#benchmark-results">Benchmark Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples with RPython</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/index.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RPython By Example</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Rewriting Python Benchmarks</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/mesalock-linux/rpython-by-example/blob/master/rewrite-benchmarks/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rewriting-python-benchmarks">
+<h1>Rewriting Python Benchmarks<a class="headerlink" href="#rewriting-python-benchmarks" title="Permalink to this headline"></a></h1>
+<p>To understand the performance of RPython, we are trying to rewrite some <a class="reference external" href="https://bitbucket.org/pypy/benchmarks">Python
+benchmarks</a> with RPython. In this
+section, we use several examples (fibonacci number and binary tree) to
+illustrate tips to rewrite Python code with RPython. As you will see, rewriting
+Python with RPython doesn’t require much effort, and we will gain a lot of
+performance improvements.</p>
+<section id="fibonacci-number">
+<h2>Fibonacci Number<a class="headerlink" href="#fibonacci-number" title="Permalink to this headline"></a></h2>
+<p>The following code is to calculate fibonacci number recursively.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">fib</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>To run this benchmark, we should add a target function to tell RPython the entry
+point. Also, we change to get <code class="docutils literal notranslate"><span class="pre">n</span></code> from arguments instead of hard-coding a
+constant to avoid optimization. The following code can be compiled by RPython.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos"> 3</span>        <span class="k">return</span> <span class="mi">1</span>
+<span class="linenos"> 4</span>    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+<span class="linenos"> 5</span>
+<span class="hll"><span class="linenos"> 6</span><span class="c1"># n should not be a constant, otherwise RPython will optimize it</span>
+</span><span class="hll"><span class="linenos"> 7</span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</span><span class="hll"><span class="linenos"> 8</span>    <span class="n">ret</span> <span class="o">=</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos"> 9</span>    <span class="c1"># output the result, otherwise RPython will optimize out the above call</span>
+</span><span class="hll"><span class="linenos">10</span>    <span class="c1"># (the `transform_dead_op_vars` pass)</span>
+</span><span class="hll"><span class="linenos">11</span>    <span class="nb">print</span> <span class="n">ret</span>
+</span><span class="linenos">12</span>
+<span class="hll"><span class="linenos">13</span><span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>              <span class="c1"># we need a target function</span>
+</span><span class="hll"><span class="linenos">14</span>    <span class="k">return</span> <span class="n">entry_point</span><span class="p">,</span> <span class="kc">None</span>
+</span><span class="linenos">15</span>
+<span class="hll"><span class="linenos">16</span><span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+</span><span class="hll"><span class="linenos">17</span>    <span class="n">main</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>          <span class="c1"># get n from the arguments</span>
+</span><span class="hll"><span class="linenos">18</span>    <span class="k">return</span> <span class="mi">0</span>
+</span></pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are some passes to <a class="reference external" href="https://bitbucket.org/pypy/pypy/src/default/rpython/translator/simplify.py">simplify flow graph</a>
+for optimization. These passes include
+<code class="docutils literal notranslate"><span class="pre">transform_dead_op_vars</span></code>, <code class="docutils literal notranslate"><span class="pre">eliminate_empty_blocks</span></code>, <code class="docutils literal notranslate"><span class="pre">remove_assertion_errors</span></code>,
+<code class="docutils literal notranslate"><span class="pre">remove_identical_vars_SSA</span></code>, <code class="docutils literal notranslate"><span class="pre">constfold_exitswitch</span></code>, <code class="docutils literal notranslate"><span class="pre">remove_trivial_links</span></code>,
+<code class="docutils literal notranslate"><span class="pre">SSA_to_SSI</span></code>, <code class="docutils literal notranslate"><span class="pre">coalesce_bool</span></code>, <code class="docutils literal notranslate"><span class="pre">transform_ovfcheck</span></code>, <code class="docutils literal notranslate"><span class="pre">simplify_exceptions</span></code>,
+<code class="docutils literal notranslate"><span class="pre">transform_xxxitem</span></code>, and <code class="docutils literal notranslate"><span class="pre">remove_dead_exceptions</span></code>.</p>
+</div>
+<p>Here, we simply use the GNU <code class="docutils literal notranslate"><span class="pre">time</span></code> command to measure the execution time and
+maximum resident set size during the process’s lifetime.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ /usr/bin/time -f &quot;%C\t%U\t%M&quot; python fib.py &gt; /dev/null
+python fib.py   18.21   5956
+
+$ /usr/bin/time -f &quot;%C\t%U\t%M&quot; pypy fib.py &gt; /dev/null
+pypy fib.py     4.77    112960
+
+$ rpython fib_rpy.py
+
+$ /usr/bin/time -f &quot;%C\t%U\t%M&quot; ./fib-c 40 &gt; /dev/null
+./fib_rpy-c 40  0.40    1704
+</pre></div>
+</div>
+</section>
+<section id="binary-tree">
+<h2>Binary Tree<a class="headerlink" href="#binary-tree" title="Permalink to this headline"></a></h2>
+<p>Rewriting the binary tree benchmark needs a little more efforts. In the Python
+version, it uses a tuple of tuples to represent nodes the the tree. Since
+RPython doesn’t allow variable length tuples and mixed types tuples, we write a
+new <code class="docutils literal notranslate"><span class="pre">Node</span></code> class to represent nodes in binary trees. In addition, we
+rewrite the <code class="docutils literal notranslate"><span class="pre">sum</span></code> built-in function. The following code only shows <code class="docutils literal notranslate"><span class="pre">diff</span></code> of
+original Python code and modified RPython version.</p>
+<div class="highlight-udiff notranslate"><div class="highlight"><pre><span></span><span class="gd">--- /Users/mssun/git/mssun/rpython-by-example/code/benchmarks/binary-tree.py</span><span class="w"></span>
+<span class="gi">+++ /Users/mssun/git/mssun/rpython-by-example/code/benchmarks/binary-tree_rpy.py</span><span class="w"></span>
+<span class="gu">@@ -5,18 +5,29 @@</span><span class="w"></span>
+<span class="w"> </span># contributed by Antoine Pitrou<span class="w"></span>
+<span class="w"> </span># modified by Dominique Wahli and Daniel Nanz<span class="w"></span>
+<span class="w"> </span>
+<span class="gi">+import math</span><span class="w"></span>
+<span class="gi">+</span><span class="w"></span>
+<span class="gi">+class Node(object):</span><span class="w"></span>
+<span class="gi">+    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="gi">+    Represent nodes in a binary tree.</span><span class="w"></span>
+<span class="gi">+    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="gi">+    def __init__(self, value, left, right):</span><span class="w"></span>
+<span class="gi">+        self.value = value</span><span class="w"></span>
+<span class="gi">+        self.left = left     # left node</span><span class="w"></span>
+<span class="gi">+        self.right = right   #  right node</span><span class="w"></span>
+<span class="gi">+</span><span class="w"></span>
+<span class="w"> </span>def make_tree(i, d):<span class="w"></span>
+<span class="w"> </span>
+<span class="w"> </span>    if d &gt; 0:<span class="w"></span>
+<span class="w"> </span>        i2 = i + i<span class="w"></span>
+<span class="w"> </span>        d -= 1<span class="w"></span>
+<span class="gd">-        return (i, make_tree(i2 - 1, d), make_tree(i2, d))</span><span class="w"></span>
+<span class="gd">-    return (i, None, None)</span><span class="w"></span>
+<span class="gi">+        return Node(i, make_tree(i2 - 1, d), make_tree(i2, d))</span><span class="w"></span>
+<span class="gi">+    return Node(i, None, None)    # use Node instead of tuple</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w"> </span>
+<span class="w"> </span>def check_tree(node):<span class="w"></span>
+<span class="w"> </span>
+<span class="gd">-    (i, l, r) = node</span><span class="w"></span>
+<span class="gi">+    (i, l, r) = (node.value, node.left, node.right)</span><span class="w"></span>
+<span class="w"> </span>    if l is None:<span class="w"></span>
+<span class="w"> </span>        return i<span class="w"></span>
+<span class="w"> </span>    else:<span class="w"></span>
+<span class="gu">@@ -54,15 +65,24 @@</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w"> </span>    mmd = max_depth + min_depth<span class="w"></span>
+<span class="w"> </span>    for d in range(min_depth, stretch_depth, 2):<span class="w"></span>
+<span class="gd">-        i = 2 ** (mmd - d)</span><span class="w"></span>
+<span class="gi">+        i = int(math.pow(2, (mmd - d)))    # use math.pow instead of built-in pow</span><span class="w"></span>
+<span class="w"> </span>        cs = 0<span class="w"></span>
+<span class="gd">-        for argchunk in get_argchunks(i,d):</span><span class="w"></span>
+<span class="gd">-            cs += sum(map(make_check, argchunk))</span><span class="w"></span>
+<span class="gd">-        print &#39;%d\t trees of depth %d\t check: %d&#39; % (i * 2, d, cs)</span><span class="w"></span>
+<span class="gi">+        for argchunk in get_argchunks(i,d):    # write the sum built-in function</span><span class="w"></span>
+<span class="gi">+            s = 0</span><span class="w"></span>
+<span class="gi">+            for a in argchunk:</span><span class="w"></span>
+<span class="gi">+                s += make_check(a)</span><span class="w"></span>
+<span class="gi">+            cs += s</span><span class="w"></span>
+<span class="gi">+        print &#39;%d\t trees of depth %d\t check: %d&#39; % (i*2, d, cs)</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w"> </span>    print &#39;long lived tree of depth %d\t check: %d&#39; % (<span class="w"></span>
+<span class="w"> </span>          max_depth, check_tree(long_lived_tree))<span class="w"></span>
+<span class="w"> </span>
+<span class="gd">-</span><span class="w"></span>
+<span class="w"> </span>if __name__ == &#39;__main__&#39;:<span class="w"></span>
+<span class="w"> </span>    main(17)<span class="w"></span>
+<span class="gi">+</span><span class="w"></span>
+<span class="gi">+def entry_point(argv):</span><span class="w"></span>
+<span class="gi">+    main(int(argv[1]))    # get argument from input to avoid optimization</span><span class="w"></span>
+<span class="gi">+    return 0</span><span class="w"></span>
+<span class="gi">+</span><span class="w"></span>
+<span class="gi">+# add a target</span><span class="w"></span>
+<span class="gi">+def target(*args): return entry_point, None</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Let us measure execution times of the binary tree benchmark with Python and
+PyPy, and RPython rewrite as well.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ /usr/bin/time -f &quot;%C\t%U\t%M&quot; python binary-tree.py &gt; /dev/null
+python binary-tree.py   10.45   60432
+
+$ /usr/bin/time -f &quot;%C\t%U\t%M&quot; pypy binary-tree.py &gt; /dev/null
+pypy binary-tree.py     1.60    187256
+
+$ /usr/bin/time -f &quot;%C\t%U\t%M&quot; ./binary-tree_rpy-c 17 &gt; /dev/null
+./binary-tree_rpy-c 17  0.38    68312
+</pre></div>
+</div>
+</section>
+<section id="spectral-norm">
+<h2>Spectral Norm<a class="headerlink" href="#spectral-norm" title="Permalink to this headline"></a></h2>
+<p>For the spectral norm benchmark, we made the following changes:</p>
+<ul class="simple">
+<li><p>rewrite map function</p></li>
+<li><p>rewrite generators</p></li>
+<li><p>use list instead of tuple</p></li>
+<li><p>use loop to rewrite izip function</p></li>
+</ul>
+<div class="highlight-udiff notranslate"><div class="highlight"><pre><span></span><span class="gd">--- /Users/mssun/git/mssun/rpython-by-example/code/benchmarks/spectral-norm.py</span><span class="w"></span>
+<span class="gi">+++ /Users/mssun/git/mssun/rpython-by-example/code/benchmarks/spectral-norm_rpy.py</span><span class="w"></span>
+<span class="gu">@@ -7,18 +7,27 @@</span><span class="w"></span>
+<span class="w"> </span># Dirtily sped up by Simon Descarpentries<span class="w"></span>
+<span class="w"> </span># Concurrency by Jason Stitt<span class="w"></span>
+<span class="w"> </span>
+<span class="gd">-from itertools       import izip</span><span class="w"></span>
+<span class="gd">-</span><span class="w"></span>
+<span class="w"> </span>def eval_A (i, j):<span class="w"></span>
+<span class="w"> </span>    return 1.0 / ((i + j) * (i + j + 1) / 2 + i + 1)<span class="w"></span>
+<span class="w"> </span>
+<span class="w"> </span>def eval_A_times_u (u):<span class="w"></span>
+<span class="gd">-    args = ((i,u) for i in xrange(len(u)))</span><span class="w"></span>
+<span class="gd">-    return map(part_A_times_u, args)</span><span class="w"></span>
+<span class="gi">+    args = []</span><span class="w"></span>
+<span class="gi">+    for i in range(len(u)):</span><span class="w"></span>
+<span class="gi">+        args.append((i, u))</span><span class="w"></span>
+<span class="gi">+    ret = []</span><span class="w"></span>
+<span class="gi">+    for i in args:</span><span class="w"></span>
+<span class="gi">+        ret.append(part_A_times_u(i))</span><span class="w"></span>
+<span class="gi">+    return ret</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w"> </span>def eval_At_times_u (u):<span class="w"></span>
+<span class="gd">-    args = ((i,u) for i in xrange(len(u)))</span><span class="w"></span>
+<span class="gd">-    return map(part_At_times_u, args)</span><span class="w"></span>
+<span class="gi">+    args = []</span><span class="w"></span>
+<span class="gi">+    for i in range(len(u)):</span><span class="w"></span>
+<span class="gi">+        args.append((i, u))</span><span class="w"></span>
+<span class="gi">+    ret = []</span><span class="w"></span>
+<span class="gi">+    for i in args:</span><span class="w"></span>
+<span class="gi">+        tmp = part_At_times_u(i)</span><span class="w"></span>
+<span class="gi">+        ret.append(tmp)</span><span class="w"></span>
+<span class="gi">+    return ret</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w"> </span>def eval_AtA_times_u (u):<span class="w"></span>
+<span class="w"> </span>    return eval_At_times_u (eval_A_times_u (u))<span class="w"></span>
+<span class="gu">@@ -39,6 +48,7 @@</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w"> </span>def main(n):<span class="w"></span>
+<span class="w"> </span>    for i in range(n):<span class="w"></span>
+<span class="gi">+        v = []</span><span class="w"></span>
+<span class="w"> </span>        u = [1] * DEFAULT_N<span class="w"></span>
+<span class="w"> </span>
+<span class="w"> </span>        for dummy in xrange (10):<span class="w"></span>
+<span class="gu">@@ -47,9 +57,20 @@</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w"> </span>        vBv = vv = 0<span class="w"></span>
+<span class="w"> </span>
+<span class="gd">-        for ue, ve in izip (u, v):</span><span class="w"></span>
+<span class="gd">-            vBv += ue * ve</span><span class="w"></span>
+<span class="gd">-            vv  += ve * ve</span><span class="w"></span>
+<span class="gi">+        l = 0</span><span class="w"></span>
+<span class="gi">+        if len(u) &gt; len(v): l = len(u)</span><span class="w"></span>
+<span class="gi">+        else: l = len(v)</span><span class="w"></span>
+<span class="gi">+        for i in range(l):</span><span class="w"></span>
+<span class="gi">+            vBv += u[i] * v[i]</span><span class="w"></span>
+<span class="gi">+            vv  += v[i] * v[i]</span><span class="w"></span>
+<span class="gi">+        print vBv, vv</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w"> </span>if __name__ == &quot;__main__&quot;:<span class="w"></span>
+<span class="w"> </span>    main(400)<span class="w"></span>
+<span class="gi">+</span><span class="w"></span>
+<span class="gi">+def entry_point(argv):</span><span class="w"></span>
+<span class="gi">+    main(int(argv[1]))</span><span class="w"></span>
+<span class="gi">+    return 0</span><span class="w"></span>
+<span class="gi">+</span><span class="w"></span>
+<span class="gi">+def target(*args):</span><span class="w"></span>
+<span class="gi">+    return entry_point, None</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ /usr/bin/time -f &quot;%C\t%U\t%M&quot; python spectral-norm.py &gt; /dev/null
+python spectral-norm.py 34.83   6140
+
+$ /usr/bin/time -f &quot;%C\t%U\t%M&quot; pypy spectral-norm.py &gt; /dev/null
+pypy spectral-norm.py   1.20    81016
+
+$ /usr/bin/time -f &quot;%C\t%U\t%M&quot; ./spectral-norm_rpy-c 17 &gt; /dev/null
+./spectral-norm_rpy-c 400       0.26    7892
+</pre></div>
+</div>
+</section>
+<section id="benchmark-results">
+<h2>Benchmark Results<a class="headerlink" href="#benchmark-results" title="Permalink to this headline"></a></h2>
+<p>In addition to “fibonacci number” and “binary tree”, we also rewrite some other
+benchmarks (<a class="reference external" href="https://github.com/mesalock-linux/rpython-by-example/tree/master/code/benchmarks">source code</a>).
+The following table summarize the benchmark results.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 18%" />
+<col style="width: 10%" />
+<col style="width: 13%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>Python 2.7.15</p></th>
+<th class="head" colspan="2"><p>PyPy2 v6.0.0</p></th>
+<th class="head" colspan="4"><p>RPython (PyPy2 v6.0.0)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+<td><p>Time (s)</p></td>
+<td><p>Time (s)</p></td>
+<td><p>Speedup</p></td>
+<td><p>Time (s)</p></td>
+<td colspan="2"><p>Speedup</p></td>
+<td><p>Size (KB)</p></td>
+</tr>
+<tr class="row-odd"><td><p>fib.py</p></td>
+<td><p>18.21</p></td>
+<td><p>4.77</p></td>
+<td><p>3.82</p></td>
+<td><p>0.40</p></td>
+<td colspan="2"><p>45.53</p></td>
+<td><p>282</p></td>
+</tr>
+<tr class="row-even"><td><p>binary-tree.py</p></td>
+<td><p>10.45</p></td>
+<td><p>1.60</p></td>
+<td><p>6.53</p></td>
+<td><p>0.38</p></td>
+<td colspan="2"><p>27.50</p></td>
+<td><p>301</p></td>
+</tr>
+<tr class="row-odd"><td><p>float.py</p></td>
+<td><p>11.47</p></td>
+<td><p>1.51</p></td>
+<td><p>7.60</p></td>
+<td><p>0.57</p></td>
+<td colspan="2"><p>20.12</p></td>
+<td><p>277</p></td>
+</tr>
+<tr class="row-even"><td><p>fannkuch.py</p></td>
+<td><p>3.91</p></td>
+<td><p>0.54</p></td>
+<td><p>7.24</p></td>
+<td><p>0.32</p></td>
+<td colspan="2"><p>12.22</p></td>
+<td><p>282</p></td>
+</tr>
+<tr class="row-odd"><td><p>buffer.py</p></td>
+<td><p>1.23</p></td>
+<td><p>0.64</p></td>
+<td><p>1.92</p></td>
+<td><p>0.52</p></td>
+<td colspan="2"><p>2.37</p></td>
+<td><p>284</p></td>
+</tr>
+<tr class="row-even"><td><p>spectral-norm.py</p></td>
+<td><p>34.83</p></td>
+<td><p>1.20</p></td>
+<td><p>29.03</p></td>
+<td><p>0.26</p></td>
+<td colspan="2"><p>133.96</p></td>
+<td><p>307</p></td>
+</tr>
+</tbody>
+</table>
+<p>As you can see, the average speedup of RPython compared to Python 2.7.15 is
+about 21. Moreover, compared to the very large Python interpreter, the size of
+RPython binary is pretty small.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../error/index.html" class="btn btn-neutral float-left" title="Compilation Errors" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../examples/index.html" class="btn btn-neutral float-right" title="Examples with RPython" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Mingshen Sun.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

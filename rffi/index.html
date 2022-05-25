@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Foreign Function Interface (rffi) &mdash; RPython By Example  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Compilation Errors" href="../error/index.html" />
+    <link rel="prev" title="JIT" href="../jit/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> RPython By Example
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../builtin-types/index.html">Built-in Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../builtin-functions/index.html">Built-in Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/index.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow-control/index.html">Flow Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rlib/index.html">Modules (rlib)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jit/index.html">JIT</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Foreign Function Interface (rffi)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#call-functions-in-libc">Call Functions in libc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#separate-module-source">Separate Module Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#string-operations">String Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#list-conversion">List Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-functions">Other Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#more-examples">More Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage-of-externalcompilationinfo">Usage of ExternalCompilationInfo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ffi-types">FFI Types</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../error/index.html">Compilation Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewrite-benchmarks/index.html">Rewriting Python Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples with RPython</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/index.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RPython By Example</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Foreign Function Interface (rffi)</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/mesalock-linux/rpython-by-example/blob/master/rffi/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="foreign-function-interface-rffi">
+<h1>Foreign Function Interface (rffi)<a class="headerlink" href="#foreign-function-interface-rffi" title="Permalink to this headline"></a></h1>
+<p>The foreign function interface of RPython is called rffi. With rffi, you can
+declaring low-level external C function, registering function as external,
+defining C types, etc.</p>
+<section id="call-functions-in-libc">
+<h2>Call Functions in libc<a class="headerlink" href="#call-functions-in-libc" title="Permalink to this headline"></a></h2>
+<p>The following example shows how to use rffi to call math function in libc.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rpython.rtyper.lltypesystem</span> <span class="kn">import</span> <span class="n">rffi</span>
+<span class="kn">from</span> <span class="nn">rpython.translator.tool.cbuild</span> <span class="kn">import</span> <span class="n">ExternalCompilationInfo</span>
+<span class="kn">from</span> <span class="nn">rpython.rlib.rarithmetic</span> <span class="kn">import</span> <span class="n">r_int32</span><span class="p">,</span> <span class="n">r_int64</span><span class="p">,</span> <span class="n">r_longlong</span>
+
+<span class="n">eci</span> <span class="o">=</span> <span class="n">ExternalCompilationInfo</span><span class="p">(</span>
+    <span class="n">includes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;stdlib.h&#39;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># int abs(int j);</span>
+<span class="n">c_abs</span> <span class="o">=</span> <span class="n">rffi</span><span class="o">.</span><span class="n">llexternal</span><span class="p">(</span><span class="s1">&#39;abs&#39;</span><span class="p">,</span>                     <span class="c1"># function name</span>
+                        <span class="p">[</span><span class="n">rffi</span><span class="o">.</span><span class="n">INT</span><span class="p">],</span>                <span class="c1"># argument types</span>
+                        <span class="n">rffi</span><span class="o">.</span><span class="n">INT</span><span class="p">,</span>                  <span class="c1"># return type</span>
+                        <span class="n">compilation_info</span><span class="o">=</span><span class="n">eci</span><span class="p">)</span>
+
+<span class="c1"># long int labs(long int j);</span>
+<span class="n">c_labs</span> <span class="o">=</span> <span class="n">rffi</span><span class="o">.</span><span class="n">llexternal</span><span class="p">(</span><span class="s1">&#39;labs&#39;</span><span class="p">,</span>                   <span class="c1"># function name</span>
+                         <span class="p">[</span><span class="n">rffi</span><span class="o">.</span><span class="n">LONG</span><span class="p">],</span>              <span class="c1"># argument types</span>
+                         <span class="n">rffi</span><span class="o">.</span><span class="n">LONG</span><span class="p">,</span>                <span class="c1"># return type</span>
+                         <span class="n">compilation_info</span><span class="o">=</span><span class="n">eci</span><span class="p">)</span>
+
+<span class="c1"># long long int llabs(long long int j);</span>
+<span class="n">c_llabs</span> <span class="o">=</span> <span class="n">rffi</span><span class="o">.</span><span class="n">llexternal</span><span class="p">(</span><span class="s1">&#39;llabs&#39;</span><span class="p">,</span>                 <span class="c1"># function name</span>
+                         <span class="p">[</span><span class="n">rffi</span><span class="o">.</span><span class="n">LONGLONG</span><span class="p">],</span>          <span class="c1"># argument types</span>
+                         <span class="n">rffi</span><span class="o">.</span><span class="n">LONGLONG</span><span class="p">,</span>            <span class="c1"># return type</span>
+                         <span class="n">compilation_info</span><span class="o">=</span><span class="n">eci</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">rffi_example</span><span class="p">():</span>
+    <span class="n">int_number</span> <span class="o">=</span> <span class="n">r_int32</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">c_abs</span><span class="p">(</span><span class="n">int_number</span><span class="p">)</span>
+
+    <span class="n">long_number</span> <span class="o">=</span> <span class="n">r_int64</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">c_labs</span><span class="p">(</span><span class="n">long_number</span><span class="p">)</span>
+
+    <span class="n">longlong_number</span> <span class="o">=</span> <span class="n">r_longlong</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">c_llabs</span><span class="p">(</span><span class="n">longlong_number</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span> <span class="n">rffi_example</span><span class="p">();</span> <span class="k">return</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+</pre></div>
+</div>
+</section>
+<section id="separate-module-source">
+<h2>Separate Module Source<a class="headerlink" href="#separate-module-source" title="Permalink to this headline"></a></h2>
+<p>You can also write C function directly. The C build tool of RPython translator
+will automatically compile and link with the C functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rpython.rtyper.lltypesystem</span> <span class="kn">import</span> <span class="n">rffi</span>
+<span class="kn">from</span> <span class="nn">rpython.rtyper.lltypesystem.lltype</span> <span class="kn">import</span> <span class="n">Signed</span>
+<span class="kn">from</span> <span class="nn">rpython.translator.tool.cbuild</span> <span class="kn">import</span> <span class="n">ExternalCompilationInfo</span>
+
+<span class="n">c_source</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">int someexternalfunction(int x)</span>
+<span class="s2">{</span>
+<span class="s2">    return (x + 3);</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">eci</span> <span class="o">=</span> <span class="n">ExternalCompilationInfo</span><span class="p">(</span><span class="n">separate_module_sources</span><span class="o">=</span><span class="p">[</span><span class="n">c_source</span><span class="p">])</span>
+<span class="n">c_someexternalfunction</span> <span class="o">=</span> <span class="n">rffi</span><span class="o">.</span><span class="n">llexternal</span><span class="p">(</span><span class="s1">&#39;someexternalfunction&#39;</span><span class="p">,</span>
+                                         <span class="p">[</span><span class="n">Signed</span><span class="p">],</span>
+                                         <span class="n">Signed</span><span class="p">,</span>
+                                         <span class="n">compilation_info</span><span class="o">=</span><span class="n">eci</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">rffi_example</span><span class="p">():</span>
+    <span class="nb">print</span> <span class="n">c_someexternalfunction</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span> <span class="n">rffi_example</span><span class="p">();</span> <span class="k">return</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+</pre></div>
+</div>
+</section>
+<section id="string-operations">
+<h2>String Operations<a class="headerlink" href="#string-operations" title="Permalink to this headline"></a></h2>
+<p>There are several functions to handle string conversion including ASCII and
+unicode encodings:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>* str2charp, free_charp, charp2str,
+  get_nonmovingbuffer, free_nonmovingbuffer, get_nonmovingbuffer_final_null,
+  alloc_buffer, str_from_buffer, keep_buffer_alive_until_here,
+  charp2strn, charpsize2str, str2chararray, str2rawmem,
+
+* unicode2wcharp, free_wcharp, wcharp2unicode,
+  get_nonmoving_unicodebuffer, free_nonmoving_unicodebuffer,
+  alloc_unicodebuffer, unicode_from_buffer, keep_unicodebuffer_alive_until_here,
+  wcharp2unicoden, wcharpsize2unicode, unicode2wchararray, unicode2rawmem,
+</pre></div>
+</div>
+<p>Here are two examples illustrate the usage of <code class="docutils literal notranslate"><span class="pre">str2charp</span></code> and <code class="docutils literal notranslate"><span class="pre">charp2str</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rpython.rtyper.lltypesystem</span> <span class="kn">import</span> <span class="n">rffi</span>
+<span class="kn">from</span> <span class="nn">rpython.rtyper.lltypesystem</span> <span class="kn">import</span> <span class="n">lltype</span>
+<span class="kn">from</span> <span class="nn">rpython.translator</span> <span class="kn">import</span> <span class="n">cdir</span>
+<span class="kn">from</span> <span class="nn">rpython.tool.udir</span> <span class="kn">import</span> <span class="n">udir</span>
+<span class="kn">from</span> <span class="nn">rpython.translator.tool.cbuild</span> <span class="kn">import</span> <span class="n">ExternalCompilationInfo</span>
+
+<span class="c1">########################### str2charp ################################</span>
+
+<span class="n">eci1</span> <span class="o">=</span> <span class="n">ExternalCompilationInfo</span><span class="p">(</span><span class="n">includes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;string.h&#39;</span><span class="p">])</span>
+<span class="n">c_strlen</span> <span class="o">=</span> <span class="n">rffi</span><span class="o">.</span><span class="n">llexternal</span><span class="p">(</span><span class="s1">&#39;strlen&#39;</span><span class="p">,</span>
+                            <span class="p">[</span><span class="n">rffi</span><span class="o">.</span><span class="n">CCHARP</span><span class="p">],</span>
+                            <span class="n">rffi</span><span class="o">.</span><span class="n">SIGNED</span><span class="p">,</span>
+                            <span class="n">compilation_info</span><span class="o">=</span><span class="n">eci1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">rffi_strlen</span><span class="p">():</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">rffi</span><span class="o">.</span><span class="n">str2charp</span><span class="p">(</span><span class="s2">&quot;Hello, World!&quot;</span><span class="p">)</span>    <span class="c1"># alloc a string buffer</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">c_strlen</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">res</span>
+    <span class="n">rffi</span><span class="o">.</span><span class="n">free_charp</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>                     <span class="c1"># free the string buffer</span>
+
+<span class="c1">########################### charp2str ################################</span>
+
+<span class="n">c_source_2</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">#include &lt;string.h&gt;</span>
+<span class="s2">#include &lt;src/mem.h&gt;</span>
+
+<span class="s2">void my_strcpy(char *target, char* arg)</span>
+<span class="s2">{</span>
+<span class="s2">    strcpy(target, arg);</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">eci2</span> <span class="o">=</span> <span class="n">ExternalCompilationInfo</span><span class="p">(</span><span class="n">separate_module_sources</span><span class="o">=</span><span class="p">[</span><span class="n">c_source_2</span><span class="p">],</span>
+                               <span class="n">post_include_bits</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;void my_strcpy(char*,char*);&#39;</span><span class="p">])</span>
+<span class="n">c_my_strcpy</span> <span class="o">=</span> <span class="n">rffi</span><span class="o">.</span><span class="n">llexternal</span><span class="p">(</span><span class="s1">&#39;my_strcpy&#39;</span><span class="p">,</span>
+                              <span class="p">[</span><span class="n">rffi</span><span class="o">.</span><span class="n">CCHARP</span><span class="p">,</span> <span class="n">rffi</span><span class="o">.</span><span class="n">CCHARP</span><span class="p">],</span>
+                              <span class="n">lltype</span><span class="o">.</span><span class="n">Void</span><span class="p">,</span>
+                              <span class="n">compilation_info</span><span class="o">=</span><span class="n">eci2</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">rffi_strcpy</span><span class="p">():</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">rffi</span><span class="o">.</span><span class="n">str2charp</span><span class="p">(</span><span class="s2">&quot;Hello, World!&quot;</span><span class="p">)</span>    <span class="c1"># alloc a string buffer</span>
+    <span class="n">l_res</span> <span class="o">=</span> <span class="n">lltype</span><span class="o">.</span><span class="n">malloc</span><span class="p">(</span><span class="n">rffi</span><span class="o">.</span><span class="n">CCHARP</span><span class="o">.</span><span class="n">TO</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">flavor</span><span class="o">=</span><span class="s1">&#39;raw&#39;</span><span class="p">)</span>    <span class="c1"># alloc a raw buffer</span>
+    <span class="n">c_my_strcpy</span><span class="p">(</span><span class="n">l_res</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">rffi</span><span class="o">.</span><span class="n">charp2str</span><span class="p">(</span><span class="n">l_res</span><span class="p">)</span>         <span class="c1"># convert C string (char*) to RPython string</span>
+    <span class="nb">print</span> <span class="n">res</span>
+    <span class="n">lltype</span><span class="o">.</span><span class="n">free</span><span class="p">(</span><span class="n">l_res</span><span class="p">,</span> <span class="n">flavor</span><span class="o">=</span><span class="s1">&#39;raw&#39;</span><span class="p">)</span>    <span class="c1"># free the raw buffer</span>
+    <span class="n">rffi</span><span class="o">.</span><span class="n">free_charp</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>                  <span class="c1"># free the string buffer</span>
+
+<span class="k">def</span> <span class="nf">rffi_str</span><span class="p">():</span>
+    <span class="n">rffi_strlen</span><span class="p">()</span>
+    <span class="n">rffi_strcpy</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span> <span class="n">rffi_str</span><span class="p">();</span> <span class="k">return</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+</pre></div>
+</div>
+</section>
+<section id="list-conversion">
+<h2>List Conversion<a class="headerlink" href="#list-conversion" title="Permalink to this headline"></a></h2>
+<p>List of strings is commonly used in some cases, there are two pair of functions:
+<code class="docutils literal notranslate"><span class="pre">liststr2charpp</span></code> and <code class="docutils literal notranslate"><span class="pre">charpp2liststr</span></code>. Remember to free the list using
+<code class="docutils literal notranslate"><span class="pre">free_charpp</span></code>.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>* liststr2charpp: list[str] -&gt; char**, NULL terminated
+* free_charpp: frees list of char**, NULL terminated
+* charpp2liststr: char** NULL terminated -&gt; list[str].  No freeing is done.
+</pre></div>
+</div>
+<p>Here is an example of calculating the total length of a list of strings.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rpython.rtyper.lltypesystem</span> <span class="kn">import</span> <span class="n">rffi</span>
+<span class="kn">from</span> <span class="nn">rpython.translator.tool.cbuild</span> <span class="kn">import</span> <span class="n">ExternalCompilationInfo</span>
+
+<span class="c1"># Calculate the total length of strings in the list</span>
+<span class="n">c_source</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">#include &lt;string.h&gt;</span>
+
+<span class="s2">int strlen_list(char *args[]) {</span>
+<span class="s2">    char **p = args;         // CHARPP in RPython</span>
+<span class="s2">    int l = 0;</span>
+<span class="s2">    while (*p) {</span>
+<span class="s2">        l += strlen(*p);</span>
+<span class="s2">        p++;</span>
+<span class="s2">    }</span>
+<span class="s2">    return l;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">eci</span> <span class="o">=</span> <span class="n">ExternalCompilationInfo</span><span class="p">(</span><span class="n">separate_module_sources</span><span class="o">=</span><span class="p">[</span><span class="n">c_source</span><span class="p">])</span>
+<span class="n">c_strlen_list</span> <span class="o">=</span> <span class="n">rffi</span><span class="o">.</span><span class="n">llexternal</span><span class="p">(</span><span class="s1">&#39;strlen_list&#39;</span><span class="p">,</span>           <span class="c1"># function name</span>
+                                <span class="p">[</span><span class="n">rffi</span><span class="o">.</span><span class="n">CCHARPP</span><span class="p">],</span>          <span class="c1"># parameters</span>
+                                <span class="n">rffi</span><span class="o">.</span><span class="n">SIGNED</span><span class="p">,</span>             <span class="c1"># return value</span>
+                                <span class="n">compilation_info</span><span class="o">=</span><span class="n">eci</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">rffi_list_example</span><span class="p">():</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Hello&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;World&quot;</span><span class="p">,</span> <span class="s2">&quot;!&quot;</span><span class="p">]</span>
+    <span class="n">l_charpp</span> <span class="o">=</span> <span class="n">rffi</span><span class="o">.</span><span class="n">liststr2charpp</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">c_strlen_list</span><span class="p">(</span><span class="n">l_charpp</span><span class="p">)</span>
+    <span class="n">rffi</span><span class="o">.</span><span class="n">free_charpp</span><span class="p">(</span><span class="n">l_charpp</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">r</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span> <span class="n">rffi_list_example</span><span class="p">();</span> <span class="k">return</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+</pre></div>
+</div>
+</section>
+<section id="other-functions">
+<h2>Other Functions<a class="headerlink" href="#other-functions" title="Permalink to this headline"></a></h2>
+<p>There are other useful functions like scoped str conversion and buffer allocation.</p>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>Need more detailed examples and explanation.</p>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>* size_and_sign, sizeof, offsetof
+* structcopy
+* setintfiled, getintfield
+* scoped_str2charp, scoped_unicode2wcharp, scoped_nonmovingbuffer,
+  scoped_view_charp, schoped_nonmoving_unicodebuffer, scoped_alloc_buffer,
+  scoped_alloc_unicodebuffer
+* c_memcpy, c_memset
+* get_raw_address_of_string
+</pre></div>
+</div>
+</section>
+<section id="more-examples">
+<h2>More Examples<a class="headerlink" href="#more-examples" title="Permalink to this headline"></a></h2>
+<p>Here are three more examples on handling string and callback functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rpython.rtyper.lltypesystem</span> <span class="kn">import</span> <span class="n">rffi</span>
+<span class="kn">from</span> <span class="nn">rpython.rtyper.lltypesystem</span> <span class="kn">import</span> <span class="n">lltype</span>
+<span class="kn">from</span> <span class="nn">rpython.translator</span> <span class="kn">import</span> <span class="n">cdir</span>
+<span class="kn">from</span> <span class="nn">rpython.tool.udir</span> <span class="kn">import</span> <span class="n">udir</span>
+<span class="kn">from</span> <span class="nn">rpython.translator.tool.cbuild</span> <span class="kn">import</span> <span class="n">ExternalCompilationInfo</span>
+
+<span class="c1">########################### callback #################################</span>
+
+<span class="n">h_source_callback</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">#ifndef _CALLBACK_H</span>
+<span class="s2">#define _CALLBACK_H</span>
+<span class="s2">RPY_EXTERN Signed compute(Signed arg, Signed(*callback)(Signed));</span>
+<span class="s2">#endif /* _CALLBACK_H */</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">h_include_callback</span> <span class="o">=</span> <span class="n">udir</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;callback.h&quot;</span><span class="p">)</span>
+<span class="n">h_include_callback</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">h_source_callback</span><span class="p">)</span>
+
+<span class="n">c_source_callback</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">#include &quot;src/precommondefs.h&quot;</span>
+
+<span class="s2">RPY_EXTERN Signed compute(Signed arg, Signed(*callback)(Signed))</span>
+<span class="s2">{</span>
+<span class="s2">    Signed res = callback(arg);</span>
+<span class="s2">    if (res == -1)</span>
+<span class="s2">        return -1;</span>
+<span class="s2">    return res;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">eci</span> <span class="o">=</span> <span class="n">ExternalCompilationInfo</span><span class="p">(</span><span class="n">includes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;callback.h&#39;</span><span class="p">],</span>
+                              <span class="n">include_dirs</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">udir</span><span class="p">),</span> <span class="n">cdir</span><span class="p">],</span>
+                              <span class="n">separate_module_sources</span><span class="o">=</span><span class="p">[</span><span class="n">c_source_callback</span><span class="p">])</span>
+
+<span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">rffi</span><span class="o">.</span><span class="n">SIGNED</span><span class="p">,</span> <span class="n">rffi</span><span class="o">.</span><span class="n">CCallback</span><span class="p">([</span><span class="n">rffi</span><span class="o">.</span><span class="n">SIGNED</span><span class="p">],</span> <span class="n">rffi</span><span class="o">.</span><span class="n">SIGNED</span><span class="p">)]</span>
+<span class="n">compute</span> <span class="o">=</span> <span class="n">rffi</span><span class="o">.</span><span class="n">llexternal</span><span class="p">(</span><span class="s1">&#39;compute&#39;</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">rffi</span><span class="o">.</span><span class="n">SIGNED</span><span class="p">,</span>
+                          <span class="n">compilation_info</span><span class="o">=</span><span class="n">eci</span><span class="p">)</span>
+
+<span class="c1">########################### callback end #############################</span>
+
+<span class="k">def</span> <span class="nf">rffi_callback</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">3</span>
+    <span class="nb">print</span> <span class="n">compute</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">rffi_more_examples</span><span class="p">():</span>
+    <span class="n">rffi_callback</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span> <span class="n">rffi_more_examples</span><span class="p">();</span> <span class="k">return</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>More examples of handling built-in types, string, unicode, opaque type,
+struct, pre-built constant, callback, and buffer can be found in
+<a class="reference external" href="https://bitbucket.org/pypy/pypy/src/default/rpython/rtyper/lltypesystem/test/test_rffi.py">rffi’s tests</a>.</p>
+</div>
+</section>
+<section id="usage-of-externalcompilationinfo">
+<h2>Usage of ExternalCompilationInfo<a class="headerlink" href="#usage-of-externalcompilationinfo" title="Permalink to this headline"></a></h2>
+<p>As you can see <code class="docutils literal notranslate"><span class="pre">rpython.translator.tool.cbuild.ExternalCompilationInfo</span></code> is a
+pretty useful utility to interacting with external function through C ffi.
+Let us read the detailed explanation on the attributes of
+<code class="docutils literal notranslate"><span class="pre">ExternalCompilationInfo</span></code> in the source code
+(<code class="docutils literal notranslate"><span class="pre">rpython/translator/tool/cbuild.py</span></code>).</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pre_include_bits</span></code>: list of pieces of text that should be put at the top of the
+generated .c files, before any #include. They shouldn’t contain an #include
+themselves. (Duplicate pieces are removed.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">includes</span></code>: list of .h file names to be #include’d from the generated .c files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">include_dirs</span></code>: list of dir names that is passed to the C compiler</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">post_include_bits</span></code>: list of pieces of text that should be put at the top of the
+generated .c files, after the #includes. (Duplicate pieces are removed.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libraries</span></code>: list of library names that is passed to the linker</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">library_dirs</span></code>: list of dir names that is passed to the linker</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">separate_module_sources</span></code>: list of multiline strings that are each written to a
+.c file and compiled separately and linked later on. (If function prototypes
+are needed for other .c files to access this, they can be put in
+post_include_bits.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">separate_module_files</span></code>: list of .c file names that are compiled separately and
+linked later on. (If an .h file is needed for other .c files to access this,
+it can be put in includes.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compile_extra</span></code>: list of parameters which will be directly passed to the
+compiler</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">link_extra</span></code>: list of parameters which will be directly passed to the linker</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frameworks</span></code>: list of Mac OS X frameworks which should passed to the linker. Use
+this instead of the ‘libraries’ parameter if you want to link to a framework
+bundle. Not suitable for unix-like .dylib installations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">link_files</span></code>: list of file names which will be directly passed to the linker</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">testonly_libraries</span></code>: list of libraries that are searched for during testing
+only, by ll2ctypes. Useful to search for a name in a dynamic library during
+testing but use the static library for compilation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">use_cpp_linker</span></code>: a flag to tell if g++ should be used instead of gcc when
+linking (a bit custom so far)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">platform</span></code>: an object that can identify the platform</p></li>
+</ul>
+</section>
+<section id="ffi-types">
+<h2>FFI Types<a class="headerlink" href="#ffi-types" title="Permalink to this headline"></a></h2>
+<p>Since there is no formal definitions of FFI types in docs and source code (some
+definitions are dynamically generated), here is a dump of all definitions in
+RPython FFI types. It is quit easy to understand the types based on the names.</p>
+<div class="admonition-todo admonition" id="id2">
+<p class="admonition-title">Todo</p>
+<p>Need more detailed examples and explanation.</p>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># type definitions
+AroundFnPtr
+CCHARP
+CCHARPP
+CHAR
+CONST_CCHARP
+CWCHARP
+CWCHARPP
+DOUBLE
+DOUBLEP
+FLOAT
+FLOATP
+INT
+INTMAX_T
+INTMAX_TP
+INTP
+INTPTR_T
+INTPTR_TP
+INT_FAST16_T
+INT_FAST16_TP
+INT_FAST32_T
+INT_FAST32_TP
+INT_FAST64_T
+INT_FAST64_TP
+INT_FAST8_T
+INT_FAST8_TP
+INT_LEAST16_T
+INT_LEAST16_TP
+INT_LEAST32_T
+INT_LEAST32_TP
+INT_LEAST64_T
+INT_LEAST64_TP
+INT_LEAST8_T
+INT_LEAST8_TP
+INT_real
+LONG
+LONGDOUBLE
+LONGDOUBLEP
+LONGLONG
+LONGLONGP
+LONGP
+LONG_BIT
+MODE_T
+MODE_TP
+NULL
+PID_T
+PID_TP
+PTRDIFF_T
+PTRDIFF_TP
+SHORT
+SHORTP
+SIGNED
+SIGNEDCHAR
+SIGNEDCHARP
+SIGNEDP
+SIGNEDPP
+SIZE_T
+SIZE_TP
+SSIZE_T
+SSIZE_TP
+TIME_T
+TIME_TP
+UCHAR
+UCHARP
+UINT
+UINTMAX_T
+UINTMAX_TP
+UINTP
+UINTPTR_T
+UINTPTR_TP
+UINT_FAST16_T
+UINT_FAST16_TP
+UINT_FAST32_T
+UINT_FAST32_TP
+UINT_FAST64_T
+UINT_FAST64_TP
+UINT_FAST8_T
+UINT_FAST8_TP
+UINT_LEAST16_T
+UINT_LEAST16_TP
+UINT_LEAST32_T
+UINT_LEAST32_TP
+UINT_LEAST64_T
+UINT_LEAST64_TP
+UINT_LEAST8_T
+UINT_LEAST8_TP
+ULONG
+ULONGLONG
+ULONGLONGP
+ULONGP
+USHORT
+USHORTP
+VOID*
+VOID*P
+VOIDP
+VOIDPP
+WCHAR_T
+WCHAR_TP
+__INT128_T
+__INT128_TP
+
+# functions/classes to create a type
+CArray
+CArrayPtr
+CCallback
+CConstant
+CExternVariable
+CFixedArray
+COpaque
+COpaquePtr
+CStruct
+CStructPtr
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../jit/index.html" class="btn btn-neutral float-left" title="JIT" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../error/index.html" class="btn btn-neutral float-right" title="Compilation Errors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Mingshen Sun.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

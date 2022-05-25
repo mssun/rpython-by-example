@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compilation Errors &mdash; RPython By Example  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Rewriting Python Benchmarks" href="../rewrite-benchmarks/index.html" />
+    <link rel="prev" title="Foreign Function Interface (rffi)" href="../rffi/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> RPython By Example
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../builtin-types/index.html">Built-in Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../builtin-functions/index.html">Built-in Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/index.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow-control/index.html">Flow Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rlib/index.html">Modules (rlib)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jit/index.html">JIT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rffi/index.html">Foreign Function Interface (rffi)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Compilation Errors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#annotatorerror"><code class="docutils literal notranslate"><span class="pre">AnnotatorError</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unionerror"><code class="docutils literal notranslate"><span class="pre">UnionError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#flowingerror"><code class="docutils literal notranslate"><span class="pre">FlowingError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rewrite-benchmarks/index.html">Rewriting Python Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples with RPython</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/index.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RPython By Example</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Compilation Errors</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/mesalock-linux/rpython-by-example/blob/master/error/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="compilation-errors">
+<h1>Compilation Errors<a class="headerlink" href="#compilation-errors" title="Permalink to this headline"></a></h1>
+<p>Since RPython is only designed for PyPy at the first place, the compilation error
+messages are a bit confusing. Sometime, you need some knowledge of compiler
+design to understand what’s going on. In this section, we show some common
+error messages you will see when compiler fails to compile the RPython sources.</p>
+<p>This is a very common error message caused by mixing different types.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compiler_error</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="mi">0</span>              <span class="c1"># v is an integer</span>
+    <span class="k">if</span> <span class="n">arg</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="mi">1</span>          <span class="c1"># assign integer 1 to v</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>         <span class="c1"># assign string &quot;&quot; to v</span>
+    <span class="k">return</span> <span class="n">v</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span> <span class="n">compiler_error</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="k">return</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+</pre></div>
+</div>
+<p>The following is a very verbose and confusing error message (which can be
+greatly improved). The RPython compiler will print out the stack trace like
+other exceptions in Python. You can find out types, error description, and other
+useful information of the error in the highlighted part below. In addition,
+the RPython compiler will give you a Pdb for debugging.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[translation:info] Error:
+   File &quot;/pypy/rpython/translator/goal/translate.py&quot;, line 318, in main
+     drv.proceed(goals)
+   File &quot;/pypy/rpython/translator/driver.py&quot;, line 554, in proceed
+     result = self._execute(goals, task_skip = self._maybe_skip())
+   File &quot;/pypy/rpython/translator/tool/taskengine.py&quot;, line 114, in _execute
+     res = self._do(goal, taskcallable, *args, **kwds)
+   File &quot;/pypy/rpython/translator/driver.py&quot;, line 278, in _do
+     res = func()
+   File &quot;/pypy/rpython/translator/driver.py&quot;, line 315, in task_annotate
+     s = annotator.build_types(self.entry_point, self.inputtypes)
+   File &quot;/pypy/rpython/annotator/annrpython.py&quot;, line 92, in build_types
+     return self.build_graph_types(flowgraph, inputs_s, complete_now=complete_now)
+   File &quot;/pypy/rpython/annotator/annrpython.py&quot;, line 140, in build_graph_types
+     self.complete()
+   File &quot;/pypy/rpython/annotator/annrpython.py&quot;, line 229, in complete
+     self.complete_pending_blocks()
+   File &quot;/pypy/rpython/annotator/annrpython.py&quot;, line 224, in complete_pending_blocks
+     self.processblock(graph, block)
+   File &quot;/pypy/rpython/annotator/annrpython.py&quot;, line 398, in processblock
+     self.flowin(graph, block)
+   File &quot;/pypy/rpython/annotator/annrpython.py&quot;, line 572, in flowin
+     self.follow_link(graph, link, constraints)
+   File &quot;/pypy/rpython/annotator/annrpython.py&quot;, line 603, in follow_link
+     self.addpendingblock(graph, link.target, inputs_s)
+   File &quot;/pypy/rpython/annotator/annrpython.py&quot;, line 189, in addpendingblock
+     self.mergeinputargs(graph, block, cells)
+   File &quot;/pypy/rpython/annotator/annrpython.py&quot;, line 435, in mergeinputargs
+     unions = [annmodel.unionof(c1,c2) for c1, c2 in zip(oldcells,inputcells)]
+   File &quot;/pypy/rpython/annotator/model.py&quot;, line 775, in unionof
+     s1 = pair(s1, s2).union()
+   File &quot;/pypy/rpython/annotator/binaryop.py&quot;, line 93, in union
+     raise UnionError(obj1, obj2)
+<span class="hll">[translation:ERROR] UnionError:
+</span><span class="hll">
+</span><span class="hll">Offending annotations:
+</span><span class="hll">  SomeString(const=&#39;&#39;, no_nul=True)
+</span><span class="hll">  SomeInteger(const=1, knowntype=int, nonneg=True, unsigned=False)
+</span><span class="hll">
+</span><span class="hll">In &lt;FunctionGraph of (error:1)compiler_error at 0x5b895c8&gt;:
+</span><span class="hll">&lt;return block&gt;
+</span><span class="hll">Processing block:
+</span><span class="hll">block@9[arg_0] is a &lt;class &#39;rpython.flowspace.flowcontext.SpamBlock&#39;&gt;
+</span><span class="hll">in (error:1)compiler_error
+</span><span class="hll">containing the following operations:
+</span><span class="hll">      v0 = bool(arg_0)
+</span>--end--
+[translation] start debugger...
+&gt; /pypy/rpython/annotator/binaryop.py(93)union()
+-&gt; raise UnionError(obj1, obj2)
+(Pdb+)
+</pre></div>
+</div>
+<p>Basically, there are two common errors (i.e., compiler exceptions)
+<code class="docutils literal notranslate"><span class="pre">AnnotatorError</span></code>, <code class="docutils literal notranslate"><span class="pre">FlowingError</span></code>.</p>
+<section id="annotatorerror">
+<h2><code class="docutils literal notranslate"><span class="pre">AnnotatorError</span></code><a class="headerlink" href="#annotatorerror" title="Permalink to this headline"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">AnnotatorError</span></code> is a class of compiler errors happens in annotating a RPython
+program. There are several specific errors in this class:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">UnionError</span></code> (<code class="docutils literal notranslate"><span class="pre">annotator/module.py</span></code>): annotator complains on type conflicts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TooLateForChange</span></code> (<code class="docutils literal notranslate"><span class="pre">annotator/listdef.py</span></code>): not documented</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ListChangeUnallowed</span></code> (<code class="docutils literal notranslate"><span class="pre">annotator/listdef.py</span></code>): not documented</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NoSuchAttrError</span></code> (<code class="docutils literal notranslate"><span class="pre">annotator/classdesc.py</span></code>): attributes not found in a class</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SignatureError</span></code> (<code class="docutils literal notranslate"><span class="pre">annotator/signature.py</span></code>): function declaration signature difference</p></li>
+</ul>
+<p>In addition to above specific errors, there are many common annotator errors
+which are not raised by above error classes.</p>
+<p>For instance, this is a common annotator error:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func</span><span class="p">():</span> <span class="k">return</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">compiler_error</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="n">func</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span> <span class="n">compiler_error</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="k">return</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+</pre></div>
+</div>
+<p>Here is the error message, which is very informative. In line 3, there is a
+signature mismatch. Specifically, the function takes no argument but 1 argument
+given in line 3.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[translation:ERROR] AnnotatorError:
+
+signature mismatch: func() takes no arguments (1 given)
+
+
+Occurred processing the following simple_call:
+  function func &lt;signature_error.py, line 1&gt; returning
+
+    v0 = simple_call((function func), (1))
+
+In &lt;FunctionGraph of (signature_error:2)compiler_error at 0x658a528&gt;:
+Happened at file signature_error.py line 3
+
+==&gt;     func(1)
+
+Known variable annotations:
+
+Processing block:
+block@6[arg_0] is a &lt;class &#39;rpython.flowspace.flowcontext.SpamBlock&#39;&gt;
+in (signature_error:2)compiler_error
+containing the following operations:
+      v0 = simple_call((function func), (1))
+--end--
+</pre></div>
+</div>
+<section id="unionerror">
+<h3><code class="docutils literal notranslate"><span class="pre">UnionError</span></code><a class="headerlink" href="#unionerror" title="Permalink to this headline"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">UnionError</span></code> represents there is a type conflict when annotating types. In the
+above example, the variable <code class="docutils literal notranslate"><span class="pre">v</span></code> can be an integer type and a string type
+depends on the <code class="docutils literal notranslate"><span class="pre">arg</span></code> function parameter. Let us look at the error message again.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[translation:ERROR] UnionError:
+
+Offending annotations:
+<span class="hll">  SomeString(const=&#39;&#39;, no_nul=True)
+</span><span class="hll">  SomeInteger(const=1, knowntype=int, nonneg=True, unsigned=False)
+</span>
+<span class="hll">In &lt;FunctionGraph of (error:1)compiler_error at 0x5b895c8&gt;:
+</span>&lt;return block&gt;
+Processing block:
+block@9[arg_0] is a &lt;class &#39;rpython.flowspace.flowcontext.SpamBlock&#39;&gt;
+in (error:1)compiler_error
+containing the following operations:
+      v0 = bool(arg_0)
+</pre></div>
+</div>
+<p>It tells you that there is a type conflict. The RPython annotator gives you the
+offending annotations, the <code class="docutils literal notranslate"><span class="pre">SomeString</span></code> type and the <code class="docutils literal notranslate"><span class="pre">SomeInteger</span></code>
+type, which cannot be unified. And this conflict is in the <code class="docutils literal notranslate"><span class="pre">compiler_error</span></code>
+function.</p>
+</section>
+</section>
+<section id="flowingerror">
+<h2><code class="docutils literal notranslate"><span class="pre">FlowingError</span></code><a class="headerlink" href="#flowingerror" title="Permalink to this headline"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">FlowingError</span></code> is all about errors when RPython compiler building control flow
+graphs. Here are some common causes for <code class="docutils literal notranslate"><span class="pre">FlowingError</span></code>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>unsupported operations</p></li>
+<li><p>invalid exception class</p></li>
+<li><p>cannot import modules</p></li>
+<li><p>local variable referenced before assignment</p></li>
+<li><p>global name is not defined</p></li>
+<li><p>etc.</p></li>
+</ul>
+</div></blockquote>
+<p>The flowing gives a simple example to illustrate <code class="docutils literal notranslate"><span class="pre">FlowingError</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compiler_error</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">v</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span> <span class="n">compiler_error</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="k">return</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+</pre></div>
+</div>
+<p>In addition to report <code class="docutils literal notranslate"><span class="pre">FlowingError</span></code>, the compiler will give you some detailed
+explanation.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> [translation:ERROR] FlowingError:
+
+<span class="hll"> global name &#39;v&#39; is not defined
+</span>
+ In &lt;FunctionGraph of (flowing_error:1)compiler_error at 0x717bde0&gt;:
+ Happened at file flowing_error.py line 2
+
+         return v
+
+ Processing block:
+ block@9[argv_0] is a &lt;class &#39;rpython.flowspace.flowcontext.SpamBlock&#39;&gt;
+ in (flowing_error:4)entry_point
+ containing the following operations:
+       v0 = getitem(argv_0, (1))
+       v1 = simple_call((function compiler_error), v0)
+ --end--
+</pre></div>
+</div>
+<p>When RPython detected a control flow which always raise an exception, it will
+report <code class="docutils literal notranslate"><span class="pre">FlowingError</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compiler_error</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">n</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span> <span class="n">compiler_error</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="k">return</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+</pre></div>
+</div>
+<p>In the above example, <code class="docutils literal notranslate"><span class="pre">1/0</span></code> always raises a <code class="docutils literal notranslate"><span class="pre">ZeroDivisionError</span></code> exception.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> [translation:ERROR] FlowingError:
+
+<span class="hll"> div(1, 0) always raises &lt;type &#39;exceptions.ZeroDivisionError&#39;&gt;: integer division by zero
+</span>
+ In &lt;FunctionGraph of (flowing2_error:1)compiler_error at 0x66bd1d8&gt;:
+ Happened at file flowing2_error.py line 2
+
+         n = 10 * (1/0)
+
+ Processing block:
+ block@9[argv_0] is a &lt;class &#39;rpython.flowspace.flowcontext.SpamBlock&#39;&gt;
+ in (flowing2_error:5)entry_point
+ containing the following operations:
+       v0 = getitem(argv_0, (1))
+       v1 = simple_call((function compiler_error), v0)
+ --end--
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../rffi/index.html" class="btn btn-neutral float-left" title="Foreign Function Interface (rffi)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../rewrite-benchmarks/index.html" class="btn btn-neutral float-right" title="Rewriting Python Benchmarks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Mingshen Sun.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

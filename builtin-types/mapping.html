@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mapping Types &mdash; RPython By Example  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File Objects" href="file.html" />
+    <link rel="prev" title="Set Types" href="set.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> RPython By Example
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Built-in Types</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="truth-value-testing.html">Truth Value Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="boolean-operations.html">Boolean Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comparisons.html">Comparisons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numeric.html">Numeric Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iterator.html">Iterator Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence.html">Sequence Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="set.html">Set Types</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Mapping Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file.html">File Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="primitive-type-cheat-sheet.html">Primitive Type Cheat Sheet</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../builtin-functions/index.html">Built-in Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/index.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow-control/index.html">Flow Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rlib/index.html">Modules (rlib)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jit/index.html">JIT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rffi/index.html">Foreign Function Interface (rffi)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error/index.html">Compilation Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewrite-benchmarks/index.html">Rewriting Python Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples with RPython</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/index.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RPython By Example</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Built-in Types</a> &raquo;</li>
+      <li>Mapping Types</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/mesalock-linux/rpython-by-example/blob/master/builtin-types/mapping.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mapping-types">
+<h1>Mapping Types<a class="headerlink" href="#mapping-types" title="Permalink to this headline"></a></h1>
+<p>There is currently only one standard mapping type in Python, the dictionary.
+Operations and methods of the dict type in RPython are similar with Python.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rdict</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">print_dict</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span> <span class="nb">print</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;one&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;four&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;five&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
+    <span class="n">print_dict</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+    <span class="nb">print</span> <span class="s2">&quot;len: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="s2">&quot;d[key]: &quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;one&#39;</span><span class="p">]</span>
+
+    <span class="n">d</span><span class="p">[</span><span class="s1">&#39;one&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="nb">print</span> <span class="s2">&quot;d[key] = value: &quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;one&#39;</span><span class="p">]</span>
+
+    <span class="k">del</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;one&#39;</span><span class="p">]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="s2">&quot;d[key] = value: &quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;one&#39;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="s2">&quot;KeyError: not found.&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;one&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="s2">&quot;&#39;one&#39; is not in d&quot;</span>
+
+    <span class="c1"># iterator over a dictionary</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">d</span><span class="p">):</span> <span class="nb">print</span> <span class="n">i</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">():</span> <span class="nb">print</span> <span class="n">i</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span> <span class="nb">print</span> <span class="n">i</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> <span class="nb">print</span> <span class="n">i</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">values</span><span class="p">():</span> <span class="nb">print</span> <span class="n">i</span>
+
+    <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;five&#39;</span><span class="p">)</span>
+    <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span>
+
+    <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;five&#39;</span><span class="p">:</span> <span class="mi">55</span><span class="p">})</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">rdict</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you can see, most methods of dictionary are supported in RPython. However,
+there are some exceptions.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<ul class="simple">
+<li><p>dicts with a unique key type only, provided it is hashable</p></li>
+<li><p>custom hash functions and custom equality will not be honored. Use
+<code class="docutils literal notranslate"><span class="pre">rpython.rlib.objectmodel.r_dict</span></code> for custom hash functions.</p></li>
+<li><p>the dictionary view object is not supported in RPython.</p></li>
+</ul>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">################### UNSUPPORTED IN RPYTHON ######################</span>
+
+<span class="k">def</span> <span class="nf">dict_unsupported</span><span class="p">():</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">one</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">two</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">three</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">({</span><span class="s1">&#39;one&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
+    <span class="n">d3</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;three&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)])</span>
+    <span class="n">d4</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]))</span>
+    <span class="nb">print</span> <span class="n">d1</span>
+    <span class="nb">print</span> <span class="n">d2</span>
+    <span class="nb">print</span> <span class="n">d3</span>
+    <span class="nb">print</span> <span class="n">d4</span>
+
+    <span class="c1"># There is no dictionary view objects in RPython</span>
+    <span class="n">d5</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">({</span><span class="s1">&#39;three&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;four&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;five&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">})</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">d1</span><span class="o">.</span><span class="n">viewkeys</span><span class="p">()</span>
+    <span class="n">v5</span> <span class="o">=</span> <span class="n">d5</span><span class="o">.</span><span class="n">viewkeys</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="n">v1</span> <span class="o">&amp;</span> <span class="n">v5</span>
+    <span class="nb">print</span> <span class="n">v1</span> <span class="o">|</span> <span class="n">v5</span>
+    <span class="nb">print</span> <span class="n">v1</span> <span class="o">-</span> <span class="n">v5</span>
+    <span class="nb">print</span> <span class="n">v1</span> <span class="o">^</span> <span class="n">v5</span>
+
+    <span class="c1"># keys in different types are note supported in RPython</span>
+    <span class="n">d6</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+    <span class="nb">print</span> <span class="n">d6</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">d6</span><span class="p">[</span><span class="s1">&#39;two&#39;</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">dict_unsupported</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="set.html" class="btn btn-neutral float-left" title="Set Types" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="file.html" class="btn btn-neutral float-right" title="File Objects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Mingshen Sun.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

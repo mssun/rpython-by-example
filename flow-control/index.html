@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flow Control &mdash; RPython By Example  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Modules (rlib)" href="../rlib/index.html" />
+    <link rel="prev" title="Classes" href="../classes/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> RPython By Example
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../builtin-types/index.html">Built-in Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../builtin-functions/index.html">Built-in Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/index.html">Classes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Flow Control</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#variables">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#constants">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#control-structures">Control structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#range">Range</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#definitions">Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generators">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rlib/index.html">Modules (rlib)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jit/index.html">JIT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rffi/index.html">Foreign Function Interface (rffi)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error/index.html">Compilation Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewrite-benchmarks/index.html">Rewriting Python Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples with RPython</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/index.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RPython By Example</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Flow Control</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/mesalock-linux/rpython-by-example/blob/master/flow-control/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="flow-control">
+<h1>Flow Control<a class="headerlink" href="#flow-control" title="Permalink to this headline"></a></h1>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>This section is not finished yet. Provides more examples and
+explanations.</p>
+</div>
+<section id="variables">
+<h2>Variables<a class="headerlink" href="#variables" title="Permalink to this headline"></a></h2>
+<p>Variables should contain values of at most <em>one type</em> at each control flow
+point. For example, this means that joining control paths using the same
+variable to contain both a string and a int must be avoided.</p>
+<p>Let’s look at this example code.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compiler_error</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="mi">0</span>              <span class="c1"># v is an integer</span>
+    <span class="k">if</span> <span class="n">arg</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="mi">1</span>          <span class="c1"># assign integer 1 to v</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>         <span class="c1"># assign string &quot;&quot; to v</span>
+    <span class="k">return</span> <span class="n">v</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span> <span class="n">compiler_error</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="k">return</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+</pre></div>
+</div>
+<p>The control flow graph of the <code class="docutils literal notranslate"><span class="pre">compiler_error</span></code> function is shown in the
+following figure.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/union_error.png"><img alt="../_images/union_error.png" src="../_images/union_error.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-text">Merge point of a control flow with different types.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>As you can see, at the merge point (highlighted in green), <code class="docutils literal notranslate"><span class="pre">v2</span></code> can be
+either integer <code class="docutils literal notranslate"><span class="pre">1</span></code> or an empty string <code class="docutils literal notranslate"><span class="pre">''</span></code>. this violate the RPython’s
+restriction.</p>
+<p>It is allowed to mix <code class="docutils literal notranslate"><span class="pre">None</span></code> with many other types: wrapped objects, class
+instances, lists, dicts, strings, etc., but not with int, floats or tuples.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Obj</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">flow_control_variables_unsupported</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    int, floats or tuples cannot be mixed with None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="kc">None</span>    <span class="c1"># integer</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="kc">None</span>    <span class="c1"># float</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="kc">None</span>    <span class="c1"># tuple</span>
+
+    <span class="k">if</span> <span class="n">arg</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">t</span>
+
+<span class="k">def</span> <span class="nf">flow_control_variables</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    It is allowed to mix None with many other types: wrapped objects, class</span>
+<span class="sd">    instances, lists, dicts, strings, etc.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="kc">None</span>    <span class="c1"># object instance</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="kc">None</span>    <span class="c1"># list</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="kc">None</span>    <span class="c1"># dict</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="kc">None</span>    <span class="c1"># string</span>
+
+    <span class="k">if</span> <span class="n">arg</span><span class="p">:</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="n">Obj</span><span class="p">()</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;123&quot;</span><span class="p">}</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;hello&quot;</span>
+
+    <span class="k">if</span> <span class="n">o</span> <span class="ow">and</span> <span class="n">l</span> <span class="ow">and</span> <span class="n">d</span> <span class="ow">and</span> <span class="n">s</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="n">o</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span>
+
+    <span class="k">return</span> <span class="n">o</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">s</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span> <span class="n">flow_control_variables</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]));</span> <span class="k">return</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+</pre></div>
+</div>
+</section>
+<section id="constants">
+<h2>Constants<a class="headerlink" href="#constants" title="Permalink to this headline"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All module globals are considered constants. Their binding must not be
+changed at run-time. Moreover, global (i.e. prebuilt) lists and dictionaries
+are supposed to be immutable: modifying e.g. a global list will give
+inconsistent results. However, global instances don’t have this restriction,
+so if you need mutable global state, store it in the attributes of some
+prebuilt singleton instance.</p>
+</div>
+</section>
+<section id="control-structures">
+<h2>Control structures<a class="headerlink" href="#control-structures" title="Permalink to this headline"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All allowed, for loops restricted to builtin types, generators very restricted.</p>
+</div>
+</section>
+<section id="range">
+<h2>Range<a class="headerlink" href="#range" title="Permalink to this headline"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Range and xrange are identical. range does not necessarily create an array,
+only if the result is modified. It is allowed everywhere and completely
+implemented. The only visible difference to CPython is the inaccessibility
+of the xrange fields start, stop and step.</p>
+</div>
+</section>
+<section id="definitions">
+<h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Run-time definition of classes or functions is not allowed.</p>
+</div>
+</section>
+<section id="generators">
+<h2>Generators<a class="headerlink" href="#generators" title="Permalink to this headline"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Generators are supported, but their exact scope is very limited. you can’t
+merge two different generator in one control point.</p>
+</div>
+</section>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline"></a></h2>
+<p>Python exceptions are fully supported. For example, you can catch exceptions by
+the <code class="docutils literal notranslate"><span class="pre">except</span></code> keyword following a specific exception class.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">exceptions</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">y</span>
+    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="s2">&quot;division by zero&quot;</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">exceptions</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also use the <code class="docutils literal notranslate"><span class="pre">raise</span></code> keyword to raise exceptions. The <code class="docutils literal notranslate"><span class="pre">finally</span></code> keyword
+is used to do some cleanup actions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="n">B</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">D</span><span class="p">(</span><span class="n">C</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">exceptions</span><span class="p">():</span>
+    <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="p">[</span><span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">D</span><span class="p">]:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">D</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;exception D&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">C</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;exception C&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">B</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;exception B&quot;</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;put clean-up actions here&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">exceptions</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>There is one special difference in the exception handling on “simple cases”.
+In <a class="reference external" href="https://rpython.readthedocs.io/en/latest/rpython.html#exception-rules">RPython document</a>, it
+says by default, <strong>code with no exception handlers does
+not raise exceptions</strong>. By supplying an exception handler, you ask for error
+checking. Without, you assure the system that the operation cannot fail. This
+rule does not apply to function calls: any called function is assumed to be
+allowed to raise any exception.</p>
+</div>
+<div class="admonition-todo admonition" id="id2">
+<p class="admonition-title">Todo</p>
+<p>MesaPy added mandatory <code class="docutils literal notranslate"><span class="pre">IndexError</span></code> checks. Give some details here.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../classes/index.html" class="btn btn-neutral float-left" title="Classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../rlib/index.html" class="btn btn-neutral float-right" title="Modules (rlib)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Mingshen Sun.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

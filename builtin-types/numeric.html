@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Numeric Types &mdash; RPython By Example  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Iterator Types" href="iterator.html" />
+    <link rel="prev" title="Comparisons" href="comparisons.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> RPython By Example
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Built-in Types</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="truth-value-testing.html">Truth Value Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="boolean-operations.html">Boolean Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comparisons.html">Comparisons</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Numeric Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#built-in-numeric-types">Built-in numeric types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bitwise-operations">Bitwise operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#additional-methods">Additional methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#math-functions">Math functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iterator.html">Iterator Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence.html">Sequence Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="set.html">Set Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mapping.html">Mapping Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file.html">File Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="primitive-type-cheat-sheet.html">Primitive Type Cheat Sheet</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../builtin-functions/index.html">Built-in Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/index.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow-control/index.html">Flow Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rlib/index.html">Modules (rlib)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jit/index.html">JIT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rffi/index.html">Foreign Function Interface (rffi)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error/index.html">Compilation Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewrite-benchmarks/index.html">Rewriting Python Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples with RPython</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/index.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RPython By Example</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Built-in Types</a> &raquo;</li>
+      <li>Numeric Types</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/mesalock-linux/rpython-by-example/blob/master/builtin-types/numeric.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="numeric-types">
+<h1>Numeric Types<a class="headerlink" href="#numeric-types" title="Permalink to this headline"></a></h1>
+<section id="built-in-numeric-types">
+<h2>Built-in numeric types<a class="headerlink" href="#built-in-numeric-types" title="Permalink to this headline"></a></h2>
+<p>There are three numeric types: plain integers (also called integers), long
+integers, floating point numbers.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Complex numbers are not supported as built-in types in RPython. However, you can
+use RPython libraries to handle complex numbers.</p>
+</div>
+<p>This table describes the details of RPython’s built-in types: low-level (LL)
+types, corresponding C types and sizes in memory (64-bit).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 16%" />
+<col style="width: 14%" />
+<col style="width: 26%" />
+<col style="width: 26%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>LL Type</p></th>
+<th class="head"><p>C Type</p></th>
+<th class="head"><p>Size (32-bit)</p></th>
+<th class="head"><p>Size (64-bit)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>Signed</p></td>
+<td><p>long</p></td>
+<td><p>32</p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">long</span></code></p></td>
+<td><p>Signed</p></td>
+<td><p>long</p></td>
+<td><p>32</p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p>Float</p></td>
+<td><p>double</p></td>
+<td><p>64</p></td>
+<td><p>64</p></td>
+</tr>
+</tbody>
+</table>
+<p>For more primitive types, you can find them in the
+<a class="reference internal" href="primitive-type-cheat-sheet.html"><span class="doc">primitive type cheat sheet</span></a> section.</p>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">int</span></code> type and <code class="docutils literal notranslate"><span class="pre">long</span></code> type are same type in RPython, which
+have same low level representation and size.</p>
+<p>All built-in numeric types support the following operations.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">numeric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">l</span><span class="p">):</span>
+    <span class="nb">print</span> <span class="s2">&quot;int: -1024 =&quot;</span><span class="p">,</span> <span class="n">x</span>
+    <span class="nb">print</span> <span class="s2">&quot;float: 3.14 =&quot;</span><span class="p">,</span> <span class="n">f</span>
+    <span class="nb">print</span> <span class="s2">&quot;long: 1L =&quot;</span><span class="p">,</span> <span class="n">l</span>
+
+    <span class="nb">print</span> <span class="s2">&quot;x + y =&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>      <span class="c1"># sum of x and y</span>
+    <span class="nb">print</span> <span class="s2">&quot;x - y =&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span>      <span class="c1"># difference of x and y</span>
+    <span class="nb">print</span> <span class="s2">&quot;x * y =&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>      <span class="c1"># product of x and y</span>
+    <span class="nb">print</span> <span class="s2">&quot;x / y =&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">/</span> <span class="n">y</span>      <span class="c1"># quotient of x and y</span>
+    <span class="nb">print</span> <span class="s2">&quot;x // y =&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">//</span> <span class="n">y</span>    <span class="c1"># (floored) quotient of x and y</span>
+    <span class="nb">print</span> <span class="s2">&quot;x % y =&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">%</span> <span class="n">y</span>      <span class="c1"># remainder of x / y</span>
+    <span class="nb">print</span> <span class="s2">&quot;-x =&quot;</span><span class="p">,</span> <span class="o">-</span><span class="n">x</span>            <span class="c1"># x negated</span>
+    <span class="nb">print</span> <span class="s2">&quot;+x =&quot;</span><span class="p">,</span> <span class="o">+</span><span class="n">x</span>            <span class="c1"># x unchanged</span>
+
+    <span class="nb">print</span> <span class="s2">&quot;abs(x) =&quot;</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>              <span class="c1"># absolute value or magnitude of x</span>
+    <span class="nb">print</span> <span class="s2">&quot;int(x) =&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>              <span class="c1"># x converted to integer</span>
+    <span class="nb">print</span> <span class="s2">&quot;float(x) =&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>          <span class="c1"># x converted to floating point</span>
+    <span class="c1"># print &quot;divmod(x, y) =&quot;, divmod(x, y)  # the pair (x // y, x % y)</span>
+    <span class="c1"># print &quot;pow(x, y) =&quot;, pow(x, y)        # x to the power y</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1024</span>    <span class="c1"># plain integer</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mi">42</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="mf">3.14</span>     <span class="c1"># float</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="mi">1</span><span class="n">L</span>       <span class="c1"># a long integer</span>
+    <span class="n">numeric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Some operations or built-in functions can be used in Python but currently not
+supported in RPython such as <code class="docutils literal notranslate"><span class="pre">long()</span></code>, <code class="docutils literal notranslate"><span class="pre">complex()</span></code>, <code class="docutils literal notranslate"><span class="pre">conjugate()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">**</span> <span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">divmode(x,</span> <span class="pre">y)</span></code>, <code class="docutils literal notranslate"><span class="pre">pow(x,</span> <span class="pre">y)</span></code> and <code class="docutils literal notranslate"><span class="pre">float(nan)</span></code>. However,
+RPython’s math library provided some mathematical functions.</p>
+<p>Also, it’s worth noting that RPython do constant folding at the compilation
+time. Therefore, you may found that some built-in functions work with
+RPython’s code in some scenarios. For example, you can write <code class="docutils literal notranslate"><span class="pre">pow(123,</span> <span class="pre">456)</span></code>
+in RPython code and the compiler will calculate the value at the compilation
+time.</p>
+</div>
+<p>The code snippet shows that although RPython does not support above mentioned
+built-in functions, it still can do constant folding. For instance, <code class="docutils literal notranslate"><span class="pre">divmod(x,</span> <span class="pre">y)</span></code>
+will not yield any compilation error if x and y are constants.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">numeric_constfold</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Constant folding on numeric.&quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1024</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mi">42</span>
+
+    <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span>       <span class="c1"># yield an imaginary number (complex number with zero real part)</span>
+    <span class="nb">print</span> <span class="s2">&quot;complex: 1j =&quot;</span><span class="p">,</span> <span class="n">j</span>
+    <span class="nb">print</span> <span class="s2">&quot;divmod(x, y) =&quot;</span><span class="p">,</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  <span class="c1"># the pair (x // y, x % y)</span>
+    <span class="nb">print</span> <span class="s2">&quot;pow(x, y) =&quot;</span><span class="p">,</span> <span class="nb">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>        <span class="c1"># x to the power y</span>
+
+<span class="k">def</span> <span class="nf">numeric_no_constfold</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;RPython cannot do constant folding on x and y&quot;&quot;&quot;</span>
+    <span class="nb">print</span> <span class="s2">&quot;divmod(x, y) =&quot;</span><span class="p">,</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  <span class="c1"># the pair (x // y, x % y)</span>
+    <span class="nb">print</span> <span class="s2">&quot;pow(x, y) =&quot;</span><span class="p">,</span> <span class="nb">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>        <span class="c1"># x to the power y</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">numeric_constfold</span><span class="p">()</span>
+    <span class="c1"># numeric_no_constfold(int(argv[1]), int(argv[2]))    # compilation error, comment this function to try constant folding</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In addition to above functions, the following code illustrated some other
+unsupported operations in RPython but supported in CPython.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">################### UNSUPPORTED IN RPYTHON ######################</span>
+
+<span class="k">def</span> <span class="nf">numeric_unsupported</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Operations and functions supported in Python but not supported in RPython.&quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1024</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mi">42</span>
+
+    <span class="nb">print</span> <span class="s2">&quot;long(x) =&quot;</span><span class="p">,</span> <span class="n">long</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>    <span class="c1"># x converted to long integer</span>
+
+    <span class="n">re</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="c1"># a complex number with real part re, imaginary part im. im defaults to zero.</span>
+    <span class="nb">print</span> <span class="s2">&quot;complex(x) =&quot;</span><span class="p">,</span> <span class="nb">complex</span><span class="p">(</span><span class="n">re</span><span class="p">,</span> <span class="n">im</span><span class="p">)</span>
+
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># conjugate of the complex number c. (Identity on real numbers)</span>
+    <span class="nb">print</span> <span class="s2">&quot;c.conjugate() =&quot;</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span>
+
+    <span class="nb">print</span> <span class="s2">&quot;x ** y =&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">**</span> <span class="n">y</span>     <span class="c1"># x to the power y</span>
+
+    <span class="c1"># float also accepts the strings &quot;nan&quot; and &quot;inf&quot; with an optional prefix</span>
+    <span class="c1"># &quot;+&quot; or &quot;-&quot; for Not a Number (NaN) and positive or negative infinity.</span>
+    <span class="nb">print</span> <span class="s2">&quot;float(inf) =&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="s2">&quot;float(+inf) =&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;+inf&quot;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="s2">&quot;float(-inf) =&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;-inf&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span> <span class="s2">&quot;float(nan) =&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;nan&quot;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="s2">&quot;float(+nan) =&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;+nan&quot;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="s2">&quot;float(-nan) =&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;-nan&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">numeric_unsupported</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Besides these three built-in numeric types, RPython provides more types such as
+<code class="docutils literal notranslate"><span class="pre">r_uint</span></code>, <code class="docutils literal notranslate"><span class="pre">r_int32</span></code>, <code class="docutils literal notranslate"><span class="pre">r_longlong</span></code>, etc in the arithmetic module. For more
+information, please refer to <a class="reference internal" href="../rlib/rarithmetic.html"><span class="doc">rarithmetic</span></a> in the rlib section</p>
+<p>Not like Python, RPython will not automatically use big integer when
+appropriate. The big integer type and corresponding operations are provided
+in the <code class="docutils literal notranslate"><span class="pre">rbigint</span></code> library, please refer to <a class="reference internal" href="../rlib/rbigint.html"><span class="doc">rbigint</span></a> in the rlib
+section.</p>
+</div>
+</section>
+<section id="bitwise-operations">
+<h2>Bitwise operations<a class="headerlink" href="#bitwise-operations" title="Permalink to this headline"></a></h2>
+<p>Bitwise operations on integer types in RPython are same as Python.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">numeric_bitwise</span><span class="p">():</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="nb">print</span> <span class="s2">&quot;x = &quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;, y = &quot;</span><span class="p">,</span> <span class="n">y</span>
+    <span class="c1"># the bitwise operations sorted in ascending priority</span>
+    <span class="nb">print</span> <span class="s2">&quot;x | y =&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">|</span> <span class="n">y</span>      <span class="c1"># bitwise or of x and y</span>
+    <span class="nb">print</span> <span class="s2">&quot;x ^ y =&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">^</span> <span class="n">y</span>      <span class="c1"># bitwise exclusive or of x and y</span>
+    <span class="nb">print</span> <span class="s2">&quot;x &amp; y =&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">&amp;</span> <span class="n">y</span>      <span class="c1"># bitwise and of x and y</span>
+    <span class="nb">print</span> <span class="s2">&quot;x &lt;&lt; n =&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="n">n</span>    <span class="c1"># x shifted left by n bits</span>
+    <span class="nb">print</span> <span class="s2">&quot;x &gt;&gt; n =&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="n">n</span>    <span class="c1"># x shifted right by n bits</span>
+    <span class="nb">print</span> <span class="s2">&quot;~x =&quot;</span><span class="p">,</span> <span class="o">~</span><span class="n">x</span>            <span class="c1"># the bits of x inverted</span>
+
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">numeric_bitwise</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="additional-methods">
+<h2>Additional methods<a class="headerlink" href="#additional-methods" title="Permalink to this headline"></a></h2>
+<p>In Python, there are several <a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#additional-methods-on-integer-types">additional methods</a>
+on integer and float types.
+However, <em>all</em> these methods are not supported in RPython. For example,
+<code class="docutils literal notranslate"><span class="pre">int.bit_length()</span></code> and <code class="docutils literal notranslate"><span class="pre">long.bit_length()</span></code> can be used to get the number
+of bits to present an integer. Others like <code class="docutils literal notranslate"><span class="pre">float.as_integer_ratio()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">float.is_integer()</span></code>, <code class="docutils literal notranslate"><span class="pre">float.hex()</span></code>, and <code class="docutils literal notranslate"><span class="pre">float.fronhex(S)</span></code> are also
+not supported.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p><em>All</em> additional methods such as <code class="docutils literal notranslate"><span class="pre">int.bit_length()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">float.float.as_integer_ratio()</span></code> on numeric types are not supported in
+RPython.</p>
+</div>
+</section>
+<section id="math-functions">
+<h2>Math functions<a class="headerlink" href="#math-functions" title="Permalink to this headline"></a></h2>
+<p>In Python, the <code class="docutils literal notranslate"><span class="pre">math</span></code> module provides access to the mathematical functions
+defined by the C standard. For RPython, you can call math functions in the
+similar way.</p>
+<p>The math functions contain
+<code class="docutils literal notranslate"><span class="pre">fabs</span></code>, <code class="docutils literal notranslate"><span class="pre">log</span></code>, <code class="docutils literal notranslate"><span class="pre">log10</span></code>, <code class="docutils literal notranslate"><span class="pre">log1p</span></code>, <code class="docutils literal notranslate"><span class="pre">copysign</span></code>, <code class="docutils literal notranslate"><span class="pre">atan2</span></code>, <code class="docutils literal notranslate"><span class="pre">frexp</span></code>,
+<code class="docutils literal notranslate"><span class="pre">modf</span></code>, <code class="docutils literal notranslate"><span class="pre">ldexp</span></code>, <code class="docutils literal notranslate"><span class="pre">pow</span></code>, <code class="docutils literal notranslate"><span class="pre">fmod</span></code>, <code class="docutils literal notranslate"><span class="pre">hypot</span></code>, <code class="docutils literal notranslate"><span class="pre">floor</span></code>, <code class="docutils literal notranslate"><span class="pre">sqrt</span></code>, <code class="docutils literal notranslate"><span class="pre">sin</span></code>,
+<code class="docutils literal notranslate"><span class="pre">cos</span></code>, <code class="docutils literal notranslate"><span class="pre">acos</span></code>, <code class="docutils literal notranslate"><span class="pre">asin</span></code>, <code class="docutils literal notranslate"><span class="pre">atan</span></code>, <code class="docutils literal notranslate"><span class="pre">ceil</span></code>, <code class="docutils literal notranslate"><span class="pre">cosh</span></code>, <code class="docutils literal notranslate"><span class="pre">exp</span></code>, <code class="docutils literal notranslate"><span class="pre">fabs</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sinh</span></code>, <code class="docutils literal notranslate"><span class="pre">tan</span></code>, <code class="docutils literal notranslate"><span class="pre">tanh</span></code>, <code class="docutils literal notranslate"><span class="pre">acosh</span></code>, <code class="docutils literal notranslate"><span class="pre">asinh</span></code>, <code class="docutils literal notranslate"><span class="pre">atanh</span></code>, <code class="docutils literal notranslate"><span class="pre">expm1</span></code>.
+These math functions will call corresponding C functions in libc.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">def</span> <span class="nf">numeric_math</span><span class="p">():</span>
+    <span class="nb">print</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">1e-5</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="nb">print</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+    <span class="nb">print</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">numeric_math</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="comparisons.html" class="btn btn-neutral float-left" title="Comparisons" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="iterator.html" class="btn btn-neutral float-right" title="Iterator Types" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Mingshen Sun.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

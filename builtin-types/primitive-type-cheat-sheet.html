@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Primitive Type Cheat Sheet &mdash; RPython By Example  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Built-in Functions" href="../builtin-functions/index.html" />
+    <link rel="prev" title="File Objects" href="file.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> RPython By Example
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Built-in Types</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="truth-value-testing.html">Truth Value Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="boolean-operations.html">Boolean Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comparisons.html">Comparisons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numeric.html">Numeric Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iterator.html">Iterator Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence.html">Sequence Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="set.html">Set Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mapping.html">Mapping Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file.html">File Objects</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Primitive Type Cheat Sheet</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../builtin-functions/index.html">Built-in Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/index.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow-control/index.html">Flow Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rlib/index.html">Modules (rlib)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jit/index.html">JIT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rffi/index.html">Foreign Function Interface (rffi)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error/index.html">Compilation Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewrite-benchmarks/index.html">Rewriting Python Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples with RPython</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/index.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RPython By Example</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Built-in Types</a> &raquo;</li>
+      <li>Primitive Type Cheat Sheet</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/mesalock-linux/rpython-by-example/blob/master/builtin-types/primitive-type-cheat-sheet.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="primitive-type-cheat-sheet">
+<h1>Primitive Type Cheat Sheet<a class="headerlink" href="#primitive-type-cheat-sheet" title="Permalink to this headline"></a></h1>
+<p>The following table summarizes RPython’s primitive types and corresponding
+low-level types, FFI types, and C types.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 27%" />
+<col style="width: 17%" />
+<col style="width: 27%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>RPython Type (Primitive)</p></th>
+<th class="head"><p>LL Type</p></th>
+<th class="head"><p>FFI Type</p></th>
+<th class="head"><p>C Type (64-bit Linux)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Signed</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SIGNED</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">long</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">long</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Signed</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">LONG</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">long</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">r_uint</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Unsigned</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">UINT</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">r_ulonglong</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">UnsignedLongLong</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ULONGLONG</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">r_longlong</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SignedLongLong</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">LONGLONG</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">long</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">r_longlonglong</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SignedLongLongLong</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">__INT128_T</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">__int128_t</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">r_singlefloat</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SingleFloat</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FLOAT</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Float</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">double</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">r_longfloat</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">LongFloat</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">LONGDOUBLE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">double</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">char</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Char</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CHAR</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">char</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Bool</span></code></p></td>
+<td><p>N/A</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">boot_t</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NoneType</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Void</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">VOID</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">void</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">unicode</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">UniChar</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">WCHAR_T</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wchar_t</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>RPython types start with <code class="docutils literal notranslate"><span class="pre">r_</span></code> can be imported from the <code class="docutils literal notranslate"><span class="pre">rpython.rlib.rarithmetic</span></code> module.</p></li>
+<li><p>Low-level types can be imported from the <code class="docutils literal notranslate"><span class="pre">rpython.rtyper.lltypesystem.lltype</span></code> module.</p></li>
+<li><p>FFI types can be imported from the <code class="docutils literal notranslate"><span class="pre">rpython.rtyper.lltypesystem.rffi</span></code> module.</p></li>
+</ul>
+<p>The definitions of these types can be found in the following source code.</p>
+<ul class="simple">
+<li><p>Arithmetic type (<code class="docutils literal notranslate"><span class="pre">r_*</span></code>): <a class="reference external" href="https://bitbucket.org/pypy/pypy/src/default/rpython/rlib/rarithmetic.py">rpython/rlib/rarithmetic.py</a></p></li>
+<li><p>LL type: <a class="reference external" href="https://bitbucket.org/pypy/pypy/src/default/rpython/rtyper/lltypesystem/lltype.py">rpython/rtyper/lltypesystem/lltype.py</a></p></li>
+<li><p>FFI type: <a class="reference external" href="https://bitbucket.org/pypy/pypy/src/default/rpython/rtyper/lltypesystem/lltype.py">rpython/rtyper/lltypesystem/rffi.py</a></p></li>
+<li><p>C type: <a class="reference external" href="https://bitbucket.org/pypy/pypy/src/default/rpython/translator/c/primitive.py">rpython/translator/c/primitive.py</a></p></li>
+</ul>
+<p>In addition to these primitive types, there are other types like pointer types for FFI.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="file.html" class="btn btn-neutral float-left" title="File Objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../builtin-functions/index.html" class="btn btn-neutral float-right" title="Built-in Functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Mingshen Sun.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

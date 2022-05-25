@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sequence Types &mdash; RPython By Example  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Set Types" href="set.html" />
+    <link rel="prev" title="Iterator Types" href="iterator.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> RPython By Example
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Built-in Types</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="truth-value-testing.html">Truth Value Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="boolean-operations.html">Boolean Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comparisons.html">Comparisons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numeric.html">Numeric Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iterator.html">Iterator Types</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Sequence Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#string">string</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#list">list</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tuple">tuple</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#xrange">xrange</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="set.html">Set Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mapping.html">Mapping Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file.html">File Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="primitive-type-cheat-sheet.html">Primitive Type Cheat Sheet</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../builtin-functions/index.html">Built-in Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/index.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow-control/index.html">Flow Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rlib/index.html">Modules (rlib)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jit/index.html">JIT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rffi/index.html">Foreign Function Interface (rffi)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error/index.html">Compilation Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewrite-benchmarks/index.html">Rewriting Python Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples with RPython</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/index.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RPython By Example</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Built-in Types</a> &raquo;</li>
+      <li>Sequence Types</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/mesalock-linux/rpython-by-example/blob/master/builtin-types/sequence.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sequence-types">
+<h1>Sequence Types<a class="headerlink" href="#sequence-types" title="Permalink to this headline"></a></h1>
+<p>There are seven sequence types: strings, Unicode strings, lists, tuples,
+bytearrays, buffers, and xrange objects. For other containers see the
+built in dict and set classes. These types can be used in RPython same
+as in Python.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sequence</span><span class="p">():</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;this is a string&quot;</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;this is a unicode string&quot;</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;this&quot;</span><span class="p">,</span> <span class="s2">&quot;is&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;of&quot;</span><span class="p">,</span> <span class="s2">&quot;strings&quot;</span><span class="p">]</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;first&quot;</span><span class="p">,</span> <span class="s2">&quot;second&quot;</span><span class="p">)</span>
+    <span class="n">ba</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x44\x45\x41\x44\x42\x45\x45\x46</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">buf</span> <span class="o">=</span> <span class="n">buffer</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="nb">print</span> <span class="n">s</span><span class="p">;</span> <span class="nb">print</span> <span class="n">u</span><span class="p">;</span> <span class="nb">print</span> <span class="n">l</span><span class="p">;</span> <span class="nb">print</span> <span class="n">t</span><span class="p">;</span> <span class="nb">print</span> <span class="n">ba</span><span class="p">;</span> <span class="nb">print</span> <span class="n">buf</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span> <span class="nb">print</span> <span class="n">i</span>
+
+    <span class="c1"># x in s: True if an item of s is equal to x, else False</span>
+    <span class="k">if</span> <span class="s1">&#39;t&#39;</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="s2">&quot;t is in string&quot;</span><span class="p">,</span> <span class="n">s</span>
+
+    <span class="c1"># x not in s:  False if an item of s is equal to x, else True</span>
+    <span class="k">if</span> <span class="s1">&#39;b&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">u</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="s2">&quot;b is not in unicode string&quot;</span><span class="p">,</span> <span class="n">u</span>
+
+    <span class="c1"># s + t: the concatenation of s and t</span>
+    <span class="nb">print</span> <span class="n">l</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;:)&quot;</span><span class="p">]</span>
+
+    <span class="c1"># s * n, n * s: equivalent to adding s to itself n times</span>
+    <span class="nb">print</span> <span class="n">t</span> <span class="o">*</span> <span class="mi">2</span>
+
+    <span class="c1"># s[i]: ith item of s, origin 0</span>
+    <span class="nb">print</span> <span class="s2">&quot;3rd item of l is:&quot;</span><span class="p">,</span> <span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1"># s[i:j]: slice of s from i to j</span>
+    <span class="nb">print</span> <span class="s2">&quot;slice of s:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># len(s): length of s</span>
+    <span class="nb">print</span> <span class="s2">&quot;length of ba is&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ba</span><span class="p">)</span>
+
+    <span class="c1"># s.index(x): index of the first occurrence of x in s</span>
+    <span class="nb">print</span> <span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;of&quot;</span><span class="p">)</span>
+
+    <span class="c1"># s.count(x): total number of occurrences of x in s</span>
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;is&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">sequence</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Most operations for sequence types are supported in RPython, but some have
+restrictions. Such as slicing with negative indexes and min/max builtin methods.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">################### UNSUPPORTED IN RPYTHON ######################</span>
+
+<span class="k">def</span> <span class="nf">sequence_unsupported</span><span class="p">():</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;this&quot;</span><span class="p">,</span> <span class="s2">&quot;is&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;of&quot;</span><span class="p">,</span> <span class="s2">&quot;strings&quot;</span><span class="p">]</span>
+
+    <span class="nb">print</span> <span class="s2">&quot;slice of l from 3rd to end:&quot;</span><span class="p">,</span> <span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># s[i:j:k]: slice of s from i to j with step k</span>
+    <span class="nb">print</span> <span class="s2">&quot;slice of l from 1st to 4th with 2 steps:&quot;</span><span class="p">,</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1"># min(s): smallest item of s</span>
+    <span class="n">list_number</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="nb">print</span> <span class="s2">&quot;smallest item of s&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">list_number</span><span class="p">)</span>
+
+    <span class="c1"># max(s): largest item of s</span>
+    <span class="nb">print</span> <span class="s2">&quot;largest item of s&quot;</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">list_number</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">sequence_unsupported</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="string">
+<h2>string<a class="headerlink" href="#string" title="Permalink to this headline"></a></h2>
+<p>Only a few string methods are supported in RPython. Besides the limited methods
+in RPython, there are also some restrictions of indexing, slicing, and string
+formating. Also, note that the type of items in a list should be same, and you
+cannot mix types in a RPython list.
+The following examples show some supported methods and usages in RPython.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="k">def</span> <span class="nf">strings</span><span class="p">():</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;this is a string&quot;</span>
+
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;this&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;ing&quot;</span><span class="p">):</span> <span class="nb">print</span> <span class="s2">&quot;s ends with string&quot;</span>
+
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;is&quot;</span><span class="p">):</span> <span class="nb">print</span> <span class="s2">&quot;found is in s&quot;</span>
+
+    <span class="n">s2</span> <span class="o">=</span> <span class="s2">&quot;thisisastring2&quot;</span>
+    <span class="k">if</span> <span class="n">s2</span><span class="o">.</span><span class="n">isalnum</span><span class="p">():</span> <span class="nb">print</span> <span class="s2">&quot;s2 is alnum&quot;</span>
+
+    <span class="n">s3</span> <span class="o">=</span> <span class="s2">&quot;thisisastringthree&quot;</span>
+    <span class="k">if</span> <span class="n">s3</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span> <span class="nb">print</span> <span class="s2">&quot;s3 is alpha&quot;</span>
+
+    <span class="n">s4</span> <span class="o">=</span> <span class="s2">&quot;12345&quot;</span>
+    <span class="k">if</span> <span class="n">s4</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span> <span class="nb">print</span> <span class="s2">&quot;s4 is digit&quot;</span>
+
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;this&quot;</span><span class="p">,</span> <span class="s2">&quot;is&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;string&quot;</span><span class="p">]</span>
+    <span class="nb">print</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+
+    <span class="nb">print</span> <span class="s2">&quot;THI IS A STRING&quot;</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="s1">&#39;   spacious   &#39;</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;is&quot;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+
+    <span class="n">s_lines</span> <span class="o">=</span> <span class="s2">&quot;This is a string.</span><span class="se">\n</span><span class="s2">And another string.&quot;</span>
+    <span class="nb">print</span> <span class="n">s_lines</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;this&quot;</span><span class="p">):</span> <span class="nb">print</span> <span class="s2">&quot;s starts with this&quot;</span>
+
+    <span class="nb">print</span> <span class="s1">&#39;   spacious   &#39;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
+    <span class="nb">print</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">, </span><span class="si">%d</span><span class="s2">, </span><span class="si">%x</span><span class="s2">, </span><span class="si">%o</span><span class="s2">, </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">strings</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<ul class="simple">
+<li><p>Not all string methods are supported and those that are supported, not
+necesarilly accept all arguments.</p></li>
+<li><p>Indexes can be negative. In case they are not, then you get slightly more
+efficient code if the translator can prove that they are non-negative. When
+slicing a string it is necessary to prove that the slice start and stop
+indexes are non-negative.</p></li>
+<li><p>No implicit str-to-unicode cast.</p></li>
+<li><p>Simple string formatting using the <code class="docutils literal notranslate"><span class="pre">%</span></code> operator works, as long as the
+format string is known at translation time; the only supported formatting
+specifiers are <code class="docutils literal notranslate"><span class="pre">%s</span></code>, <code class="docutils literal notranslate"><span class="pre">%d</span></code>, <code class="docutils literal notranslate"><span class="pre">%x</span></code>, <code class="docutils literal notranslate"><span class="pre">%o</span></code>, <code class="docutils literal notranslate"><span class="pre">%f</span></code>, plus <code class="docutils literal notranslate"><span class="pre">%r</span></code> but only
+for user-defined instances</p></li>
+<li><p>Modifiers such as conversion flags, precision, length etc. are not
+supported.</p></li>
+<li><p>It is forbidden to mix unicode and strings when formatting.</p></li>
+</ul>
+</div>
+<p>The following examples show some unsupported methods and usages in RPython, but
+can be used in a normal Python implementation.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1">################### UNSUPPORTED IN RPYTHON ######################</span>
+<span class="k">def</span> <span class="nf">strings_unsupported</span><span class="p">():</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;this is a string&quot;</span>
+
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+
+    <span class="n">s_utf8</span> <span class="o">=</span> <span class="s2">&quot;你好&quot;</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">s_utf8</span>
+
+    <span class="nb">print</span> <span class="s1">&#39;01</span><span class="se">\t</span><span class="s1">012</span><span class="se">\t</span><span class="s1">0123</span><span class="se">\t</span><span class="s1">01234&#39;</span><span class="o">.</span><span class="n">expandtabs</span><span class="p">()</span>
+
+    <span class="nb">print</span> <span class="s2">&quot;The sum of 1 + 2 is </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;is&quot;</span><span class="p">)</span>
+
+    <span class="n">s5</span> <span class="o">=</span> <span class="s2">&quot;this is lowercased string&quot;</span>
+    <span class="k">if</span> <span class="n">s5</span><span class="o">.</span><span class="n">islower</span><span class="p">():</span> <span class="nb">print</span> <span class="s2">&quot;s5 is lowercased&quot;</span>
+
+    <span class="n">s6</span> <span class="o">=</span> <span class="s2">&quot;         &quot;</span>
+    <span class="k">if</span> <span class="n">s6</span><span class="o">.</span><span class="n">isspace</span><span class="p">():</span> <span class="nb">print</span> <span class="s2">&quot;s6 contains only whitespaces&quot;</span>
+
+    <span class="n">s7</span> <span class="o">=</span> <span class="s2">&quot;This Is A Title String&quot;</span>
+    <span class="k">if</span> <span class="n">s7</span><span class="o">.</span><span class="n">istitle</span><span class="p">():</span> <span class="nb">print</span> <span class="s2">&quot;s7 is a title cased string&quot;</span>
+
+    <span class="n">s8</span> <span class="o">=</span> <span class="s2">&quot;THIS IS A SUPPER STRING&quot;</span>
+    <span class="k">if</span> <span class="n">s8</span><span class="o">.</span><span class="n">isupper</span><span class="p">():</span> <span class="nb">print</span> <span class="s2">&quot;s8 is all cased characters&quot;</span>
+
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;this&quot;</span><span class="p">,</span> <span class="s2">&quot;that&quot;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">rindex</span><span class="p">(</span><span class="s2">&quot;is&quot;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">swapcase</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="s2">&quot;they&#39;re bill&#39;s friends from the UK&quot;</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="n">s</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="s2">&quot;Hello, </span><span class="si">%(name)s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;world&quot;</span><span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">strings_unsupported</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">strings_unsupported</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="list">
+<h2>list<a class="headerlink" href="#list" title="Permalink to this headline"></a></h2>
+<p>Most list operations and methods are supported in RPython. However, methods
+may have some restrictions. The following examples illustrate usages of the list
+in RPython and some unsupported operations as well.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">lists</span><span class="p">():</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+    <span class="nb">print</span> <span class="n">l</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="nb">print</span> <span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Indexes are checked when requested by an IndexError exception clause.</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="n">l</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="s2">&quot;IndexError&quot;</span>
+
+    <span class="nb">print</span> <span class="n">l</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+    <span class="nb">print</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">102</span><span class="p">]</span>
+    <span class="nb">print</span> <span class="n">l</span>
+
+    <span class="c1"># other operators: +, +=, in, *, *=, ==, != work as expected.</span>
+
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>    <span class="c1"># [0, 1]</span>
+    <span class="n">l</span> <span class="o">*=</span> <span class="mi">2</span>           <span class="c1"># [0, 1, 0, 1]</span>
+
+    <span class="c1"># append, index, insert, extend, reverse, pop. The index used in pop()</span>
+    <span class="c1"># follows the same rules as for indexing above. The index used in insert()</span>
+    <span class="c1"># must be within bounds and not negative.</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>          <span class="c1"># [0]</span>
+    <span class="nb">print</span> <span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">l</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>       <span class="c1"># [0, 1]</span>
+    <span class="n">l</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>  <span class="c1"># [0, 1, 2, 3, 4]</span>
+    <span class="n">l</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>          <span class="c1"># [4, 3, 2, 1, 0]</span>
+    <span class="n">l</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>              <span class="c1"># [4, 3, 2, 1]</span>
+    <span class="k">del</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span>           <span class="c1"># [3, 2, 1]</span>
+    <span class="n">l</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>          <span class="c1"># [3, 2]</span>
+    <span class="nb">print</span> <span class="n">l</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">lists</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>lists are used as an allocated array.  Lists are over-allocated, so list.append()
+is reasonably fast. However, if you use a fixed-size list, the code
+is more efficient. Annotator can figure out most of the time that your
+list is fixed-size, even when you use list comprehension.
+Negative or out-of-bound indexes are only allowed for the
+most common operations, as follows:</p>
+<ul class="simple">
+<li><p><em>indexing</em>:
+positive and negative indexes are allowed. Indexes are checked when requested
+by an IndexError exception clause.</p></li>
+<li><p><em>slicing</em>:
+the slice start must be within bounds. The stop doesn’t need to, but it must
+not be smaller than the start.  All negative indexes are disallowed, except for
+the [:-1] special case.  No step.  Slice deletion follows the same rules.</p></li>
+<li><p><em>slice assignment</em>:
+only supports <code class="docutils literal notranslate"><span class="pre">lst[x:y]</span> <span class="pre">=</span> <span class="pre">sublist</span></code>, if <code class="docutils literal notranslate"><span class="pre">len(sublist)</span> <span class="pre">==</span> <span class="pre">y</span> <span class="pre">-</span> <span class="pre">x</span></code>.
+In other words, slice assignment cannot change the total length of the list,
+but just replace items.</p></li>
+<li><p><em>other operators</em>:
+<code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">+=</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code>, <code class="docutils literal notranslate"><span class="pre">*=</span></code>, <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">!=</span></code> work as expected.</p></li>
+<li><p><em>methods</em>:
+append, index, insert, extend, reverse, pop.  The index used in pop() follows
+the same rules as for <em>indexing</em> above.  The index used in insert() must be within
+bounds and not negative.</p></li>
+</ul>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">################### UNSUPPORTED IN RPYTHON ######################</span>
+
+<span class="k">def</span> <span class="nf">lists_unsupported</span><span class="p">():</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+
+    <span class="c1"># In RPython, stop doesn&#39;t need to within bounds, but it must not be</span>
+    <span class="c1"># smaller than the start</span>
+    <span class="nb">print</span> <span class="n">l</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1"># In RPython, all negative indexes are disallowed, except for the [:-1]</span>
+    <span class="c1"># special case.</span>
+    <span class="nb">print</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1"># No step in RPython</span>
+    <span class="nb">print</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1"># Slice assignment cannot change the total length of the list, but just</span>
+    <span class="c1"># replace items</span>
+    <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">102</span><span class="p">,</span> <span class="mi">103</span><span class="p">]</span>
+    <span class="nb">print</span> <span class="n">l</span>
+
+    <span class="c1"># The sort() and count() methods are not supported</span>
+    <span class="n">l</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="n">l</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">103</span><span class="p">)</span>
+
+    <span class="c1"># Mixing types in a list is not supported in RPython</span>
+    <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;mix integer with string types in a list&quot;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">l</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">lists_unsupported</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">lists_unsupported</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="tuple">
+<h2>tuple<a class="headerlink" href="#tuple" title="Permalink to this headline"></a></h2>
+<p>Tuples in RPython are very different. There are many restrictions to use tuples.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">tuples</span><span class="p">():</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">t</span>    <span class="c1"># &quot;unpack&quot; a tuple</span>
+    <span class="nb">print</span> <span class="n">t</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;123&quot;</span><span class="p">)</span> <span class="c1"># mixing types in a tuple</span>
+    <span class="nb">print</span> <span class="n">t</span>
+
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>    <span class="c1"># manually convert from a list to a tuple</span>
+    <span class="nb">print</span> <span class="n">t</span>
+
+
+<span class="k">def</span> <span class="nf">tuples_unsupported</span><span class="p">():</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;123&quot;</span><span class="p">]</span>   <span class="c1"># mixing types in lists is not supported in RPython</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>     <span class="c1"># converting from list to tuple is unsupported</span>
+    <span class="nb">print</span> <span class="n">t</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">tuples</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">tuples_unsupported</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The restrictions can be summarized as follows.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<ul class="simple">
+<li><p>no variable-length tuples; use them to store or return pairs or n-tuples of
+values. Each combination of types for elements and length constitute a
+separate and not mixable type.</p></li>
+<li><p>There is no general way to convert a list into a tuple, because the length
+of the result would not be known statically. (You can of course do
+<code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">(lst[0],</span> <span class="pre">lst[1],</span> <span class="pre">lst[2])</span></code> if you know that lst has got 3 items.)</p></li>
+</ul>
+</div>
+</section>
+<section id="xrange">
+<h2>xrange<a class="headerlink" href="#xrange" title="Permalink to this headline"></a></h2>
+<p>The following examples illustrate the usage of <code class="docutils literal notranslate"><span class="pre">range</span></code> and <code class="docutils literal notranslate"><span class="pre">xrange</span></code> in
+RPython. <code class="docutils literal notranslate"><span class="pre">range</span></code> and <code class="docutils literal notranslate"><span class="pre">xrange</span></code> are identical. <code class="docutils literal notranslate"><span class="pre">range</span></code> does not necessarily
+create an array, only if the result is modified.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rrange</span><span class="p">():</span>
+    <span class="c1"># range and xrange are same in RPython</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="nb">print</span> <span class="n">i</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="nb">print</span> <span class="n">i</span>
+
+<span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">rrange</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">sys</span><span class="p">;</span> <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="iterator.html" class="btn btn-neutral float-left" title="Iterator Types" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="set.html" class="btn btn-neutral float-right" title="Set Types" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Mingshen Sun.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

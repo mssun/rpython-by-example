@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JIT &mdash; RPython By Example  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Foreign Function Interface (rffi)" href="../rffi/index.html" />
+    <link rel="prev" title="rurandom" href="../rlib/rurandom.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> RPython By Example
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../builtin-types/index.html">Built-in Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../builtin-functions/index.html">Built-in Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classes/index.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow-control/index.html">Flow Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rlib/index.html">Modules (rlib)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">JIT</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#simple-example">Simple Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jitdriver">JitDriver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jit-decorators-and-functions">JIT Decorators and Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jit-parameters">JIT Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rffi/index.html">Foreign Function Interface (rffi)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error/index.html">Compilation Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewrite-benchmarks/index.html">Rewriting Python Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples with RPython</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references/index.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RPython By Example</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>JIT</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/mesalock-linux/rpython-by-example/blob/master/jit/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="jit">
+<h1>JIT<a class="headerlink" href="#jit" title="Permalink to this headline"></a></h1>
+<section id="simple-example">
+<h2>Simple Example<a class="headerlink" href="#simple-example" title="Permalink to this headline"></a></h2>
+<p>The following example is a interpreter of <a class="reference external" href="https://en.wikipedia.org/wiki/Brainfuck">brainfuck</a> language with JIT.
+There is a detailed tutorial (<a class="reference external" href="https://morepypy.blogspot.com/2011/04/tutorial-writing-interpreter-with-pypy.html">part1</a>,
+<a class="reference external" href="https://morepypy.blogspot.com/2011/04/tutorial-part-2-adding-jit.html">part2</a>) on
+how to write a simple interpreter with RPython.
+Here, we briefly introduce some JIT-related data structures, functions, and decorators.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">os</span>
+<span class="linenos"> 2</span><span class="kn">from</span> <span class="nn">rpython.rlib.jit</span> <span class="kn">import</span> <span class="n">JitDriver</span><span class="p">,</span> <span class="n">elidable</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">def</span> <span class="nf">get_location</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span> <span class="n">program</span><span class="p">,</span> <span class="n">bracket_map</span><span class="p">):</span>
+<span class="linenos"> 5</span>    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">program</span><span class="p">[:</span><span class="n">pc</span><span class="p">],</span> <span class="n">program</span><span class="p">[</span><span class="n">pc</span><span class="p">],</span> <span class="n">program</span><span class="p">[</span><span class="n">pc</span><span class="o">+</span><span class="mi">1</span><span class="p">:])</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="n">jitdriver</span> <span class="o">=</span> <span class="n">JitDriver</span><span class="p">(</span><span class="n">greens</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pc&#39;</span><span class="p">,</span> <span class="s1">&#39;program&#39;</span><span class="p">,</span> <span class="s1">&#39;bracket_map&#39;</span><span class="p">],</span>
+<span class="linenos"> 8</span>                      <span class="n">reds</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;tape&#39;</span><span class="p">],</span>
+<span class="linenos"> 9</span>                      <span class="n">get_printable_location</span><span class="o">=</span><span class="n">get_location</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="nd">@elidable</span>
+<span class="linenos">12</span><span class="k">def</span> <span class="nf">get_matching_bracket</span><span class="p">(</span><span class="n">bracket_map</span><span class="p">,</span> <span class="n">pc</span><span class="p">):</span>
+<span class="linenos">13</span>    <span class="k">return</span> <span class="n">bracket_map</span><span class="p">[</span><span class="n">pc</span><span class="p">]</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="k">def</span> <span class="nf">mainloop</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">bracket_map</span><span class="p">):</span>
+<span class="linenos">16</span>    <span class="n">pc</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">17</span>    <span class="n">tape</span> <span class="o">=</span> <span class="n">Tape</span><span class="p">()</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>    <span class="k">while</span> <span class="n">pc</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">program</span><span class="p">):</span>
+<span class="linenos">20</span>        <span class="n">jitdriver</span><span class="o">.</span><span class="n">jit_merge_point</span><span class="p">(</span><span class="n">pc</span><span class="o">=</span><span class="n">pc</span><span class="p">,</span>
+<span class="linenos">21</span>                                  <span class="n">tape</span><span class="o">=</span><span class="n">tape</span><span class="p">,</span>
+<span class="linenos">22</span>                                  <span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">,</span>
+<span class="linenos">23</span>                                  <span class="n">bracket_map</span><span class="o">=</span><span class="n">bracket_map</span><span class="p">)</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span>        <span class="n">code</span> <span class="o">=</span> <span class="n">program</span><span class="p">[</span><span class="n">pc</span><span class="p">]</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>        <span class="k">if</span> <span class="n">code</span> <span class="o">==</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">:</span> <span class="n">tape</span><span class="o">.</span><span class="n">advance</span><span class="p">()</span>
+<span class="linenos">28</span>        <span class="k">elif</span> <span class="n">code</span> <span class="o">==</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="n">tape</span><span class="o">.</span><span class="n">devance</span><span class="p">()</span>
+<span class="linenos">29</span>        <span class="k">elif</span> <span class="n">code</span> <span class="o">==</span> <span class="s2">&quot;+&quot;</span><span class="p">:</span> <span class="n">tape</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+<span class="linenos">30</span>        <span class="k">elif</span> <span class="n">code</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span> <span class="n">tape</span><span class="o">.</span><span class="n">dec</span><span class="p">()</span>
+<span class="linenos">31</span>        <span class="k">elif</span> <span class="n">code</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">chr</span><span class="p">(</span><span class="n">tape</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>      <span class="c1"># write</span>
+<span class="linenos">32</span>        <span class="k">elif</span> <span class="n">code</span> <span class="o">==</span> <span class="s2">&quot;,&quot;</span><span class="p">:</span> <span class="n">tape</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>   <span class="c1"># read from stdin</span>
+<span class="linenos">33</span>        <span class="k">elif</span> <span class="n">code</span> <span class="o">==</span> <span class="s2">&quot;[&quot;</span> <span class="ow">and</span> <span class="n">tape</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">34</span>            <span class="c1"># Skip forward to the matching ]</span>
+<span class="linenos">35</span>            <span class="n">pc</span> <span class="o">=</span> <span class="n">get_matching_bracket</span><span class="p">(</span><span class="n">bracket_map</span><span class="p">,</span> <span class="n">pc</span><span class="p">)</span>
+<span class="linenos">36</span>        <span class="k">elif</span> <span class="n">code</span> <span class="o">==</span> <span class="s2">&quot;]&quot;</span> <span class="ow">and</span> <span class="n">tape</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">37</span>            <span class="c1"># Skip back to the matching [</span>
+<span class="linenos">38</span>            <span class="n">pc</span> <span class="o">=</span> <span class="n">get_matching_bracket</span><span class="p">(</span><span class="n">bracket_map</span><span class="p">,</span> <span class="n">pc</span><span class="p">)</span>
+<span class="linenos">39</span>
+<span class="linenos">40</span>        <span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">41</span>
+<span class="linenos">42</span><span class="k">class</span> <span class="nc">Tape</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="linenos">43</span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">44</span>        <span class="bp">self</span><span class="o">.</span><span class="n">thetape</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">45</span>        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">46</span>
+<span class="linenos">47</span>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">thetape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">]</span>
+<span class="linenos">48</span>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">thetape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+<span class="linenos">49</span>    <span class="k">def</span> <span class="nf">inc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">thetape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">50</span>    <span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">thetape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="linenos">51</span>    <span class="k">def</span> <span class="nf">advance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">52</span>        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">53</span>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thetape</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">:</span>
+<span class="linenos">54</span>            <span class="bp">self</span><span class="o">.</span><span class="n">thetape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">55</span>    <span class="k">def</span> <span class="nf">devance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="linenos">56</span>
+<span class="linenos">57</span><span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">program</span><span class="p">):</span>
+<span class="linenos">58</span>    <span class="n">parsed</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">59</span>    <span class="n">bracket_map</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="linenos">60</span>    <span class="n">leftstack</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">61</span>
+<span class="linenos">62</span>    <span class="n">pc</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">63</span>    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">program</span><span class="p">:</span>
+<span class="linenos">64</span>        <span class="k">if</span> <span class="n">char</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">,</span> <span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">):</span>
+<span class="linenos">65</span>            <span class="n">parsed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+<span class="linenos">66</span>
+<span class="linenos">67</span>            <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;[&#39;</span><span class="p">:</span>
+<span class="linenos">68</span>                <span class="n">leftstack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span>
+<span class="linenos">69</span>            <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;]&#39;</span><span class="p">:</span>
+<span class="linenos">70</span>                <span class="n">left</span> <span class="o">=</span> <span class="n">leftstack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+<span class="linenos">71</span>                <span class="n">right</span> <span class="o">=</span> <span class="n">pc</span>
+<span class="linenos">72</span>                <span class="n">bracket_map</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">=</span> <span class="n">right</span>
+<span class="linenos">73</span>                <span class="n">bracket_map</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">=</span> <span class="n">left</span>
+<span class="linenos">74</span>            <span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">75</span>
+<span class="linenos">76</span>    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parsed</span><span class="p">),</span> <span class="n">bracket_map</span>
+<span class="linenos">77</span>
+<span class="linenos">78</span><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="linenos">79</span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="linenos">80</span>        <span class="n">program_contents</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="linenos">81</span>    <span class="n">program</span><span class="p">,</span> <span class="n">bm</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">program_contents</span><span class="p">)</span>
+<span class="linenos">82</span>    <span class="n">mainloop</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">bm</span><span class="p">)</span>
+<span class="linenos">83</span>
+<span class="linenos">84</span><span class="k">def</span> <span class="nf">entry_point</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+<span class="linenos">85</span>    <span class="k">try</span><span class="p">:</span>
+<span class="linenos">86</span>        <span class="n">filename</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="linenos">87</span>    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+<span class="linenos">88</span>        <span class="nb">print</span> <span class="s2">&quot;You must supply a filename&quot;</span>
+<span class="linenos">89</span>        <span class="k">return</span> <span class="mi">1</span>
+<span class="linenos">90</span>
+<span class="linenos">91</span>    <span class="n">run</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="linenos">92</span>    <span class="k">return</span> <span class="mi">0</span>
+<span class="linenos">93</span>
+<span class="linenos">94</span><span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">return</span> <span class="n">entry_point</span><span class="p">,</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</section>
+<section id="jitdriver">
+<h2>JitDriver<a class="headerlink" href="#jitdriver" title="Permalink to this headline"></a></h2>
+<p>An interpreter wishing to use the RPython JIT generator must define a list of
+green variables and a list of red variables. The green variables are loop
+constants. They are used to identify the current loop. Red variables are for
+everything else used in the execution loop.</p>
+</section>
+<section id="jit-decorators-and-functions">
+<h2>JIT Decorators and Functions<a class="headerlink" href="#jit-decorators-and-functions" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>elidable</p></li>
+<li><p>hint</p></li>
+<li><p>promote</p></li>
+<li><p>promote_string</p></li>
+<li><p>dont_look_inside</p></li>
+<li><p>look_inside</p></li>
+<li><p>look_inside_iff</p></li>
+<li><p>unroll_safe</p></li>
+<li><p>loop_invariant</p></li>
+<li><p>elidable_promote</p></li>
+<li><p>oopspec</p></li>
+<li><p>not_in_trace</p></li>
+<li><p>isconstant</p></li>
+<li><p>isvirtual</p></li>
+<li><p>loop_unroll_heuristic</p></li>
+<li><p>we_are_jitted</p></li>
+</ul>
+</section>
+<section id="jit-parameters">
+<h2>JIT Parameters<a class="headerlink" href="#jit-parameters" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">threshold</span></code>: number of times a loop has to run for it to become hot</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">function_threshold</span></code>: number of times a function must run for it to become traced from start</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">trace_eagerness</span></code>: number of times a guard has to fail before we start compiling a bridge</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">decay</span></code>: amount to regularly decay counters by (0=none, 1000=max)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">trace_limit</span></code>: number of recorded operations before we abort tracing with ABORT_TOO_LONG</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inlining</span></code>: inline python functions or not (1/0)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">loop_longevity</span></code>: a parameter controlling how long loops will be kept before being freed, an estimate</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">retrace_limit</span></code>: how many times we can try retracing before giving up</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_retrace_guards</span></code>: number of extra guards a retrace can cause</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_unroll_loops</span></code>: number of extra unrollings a loop can cause</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">disable_unrolling</span></code>: after how many operations we should not unroll</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enable_opts</span></code>: internal use only (may not work or lead to crashes): optimizations
+to enable, or all = intbounds:rewrite:virtualize:string:pure:earlyforce:heap:unroll</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_unroll_recursion</span></code>: how many levels deep to unroll a recursive function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vec</span></code>: turn on the vectorization optimization (vecopt). Supports x86 (SSE 4.1), powerpc (SVX), s390x SIMD</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vec_cost</span></code>: threshold for which traces to bail. Unpacking increases the counter, vector operation decrease the cost,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vec_all</span></code>: try to vectorize trace loops that occur outside of the numpypy library</p></li>
+</ul>
+<p>The default parameters are:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">PARAMETERS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;threshold&#39;</span><span class="p">:</span> <span class="mi">1039</span><span class="p">,</span> <span class="c1"># just above 1024, prime</span>
+              <span class="s1">&#39;function_threshold&#39;</span><span class="p">:</span> <span class="mi">1619</span><span class="p">,</span> <span class="c1"># slightly more than one above, also prime</span>
+              <span class="s1">&#39;trace_eagerness&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+              <span class="s1">&#39;decay&#39;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span>
+              <span class="s1">&#39;trace_limit&#39;</span><span class="p">:</span> <span class="mi">6000</span><span class="p">,</span>
+              <span class="s1">&#39;inlining&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+              <span class="s1">&#39;loop_longevity&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+              <span class="s1">&#39;retrace_limit&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="s1">&#39;max_retrace_guards&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+              <span class="s1">&#39;max_unroll_loops&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="s1">&#39;disable_unrolling&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+              <span class="s1">&#39;enable_opts&#39;</span><span class="p">:</span> <span class="s1">&#39;all&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;max_unroll_recursion&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+              <span class="s1">&#39;vec&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="s1">&#39;vec_all&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="s1">&#39;vec_cost&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../rlib/rurandom.html" class="btn btn-neutral float-left" title="rurandom" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../rffi/index.html" class="btn btn-neutral float-right" title="Foreign Function Interface (rffi)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Mingshen Sun.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
