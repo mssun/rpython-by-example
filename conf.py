@@ -20,7 +20,7 @@
 # -- Project information -----------------------------------------------------
 
 project = u'RPython By Example'
-copyright = u'2018-2019, Mingshen Sun, Baidu X-Lab'
+copyright = u'Mingshen Sun'
 author = u'Mingshen Sun'
 
 # The short X.Y version
